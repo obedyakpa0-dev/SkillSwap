@@ -1,16 +1,18 @@
-# React + Vite
+# SkillSwap
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+SkillSwap is a platform that connects people who want to exchange skills with one another instead of paying for lessons or courses. Users list the skills they can teach and the skills they want to learn, and get matched with someone for a fair trade — for example, one person teaches guitar in exchange for learning Spanish.
 
-Currently, two official plugins are available:
+The idea is to make learning more accessible by turning everyone's existing knowledge into something valuable they can trade, not just money.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Status
 
-## React Compiler
+This project is in its early stages. The core matching and listing features are still being designed and built.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the Oxlint configuration
+- React
+- Vite
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Contributing
+
+This project is open source and contributions are welcome. Fork the repository, make your changes, and open a pull request.
