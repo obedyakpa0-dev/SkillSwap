@@ -61,7 +61,7 @@ function NavItem({ item, collapsed, isActive }) {
   );
 }
 
-export default function Sidebar({ isMobileOpen, onMobileClose, isCollapsed, onToggleCollapse, onHoverChange }) {
+export default function Sidebar({ isMobileOpen, onMobileClose, isCollapsed, onToggleCollapse }) {
   const location = useLocation();
   const { logout } = useAuth();
   const [hoveredCollapsed, setHoveredCollapsed] = useState(false);
@@ -74,7 +74,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose, isCollapsed, onTo
   };
 
   const sidebarContent = (
-    <div className={`flex h-full flex-col ${effectiveCollapsed ? 'w-16' : 'w-64'}`}>
+    <div className="flex h-full w-full flex-col">
       <div className={`flex h-16 items-center border-b border-neutral-100 ${effectiveCollapsed ? 'justify-center px-0' : 'gap-2 px-6'}`}>
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-600 text-sm font-bold text-white">
           S
@@ -182,23 +182,17 @@ export default function Sidebar({ isMobileOpen, onMobileClose, isCollapsed, onTo
   return (
     <>
       {/* Desktop sidebar */}
-      <motion.aside
-        className="hidden lg:flex lg:flex-col fixed left-0 top-0 h-screen bg-white border-r border-neutral-200/60 z-30"
-        animate={{ width: effectiveCollapsed ? 64 : 256 }}
-        transition={{ duration: 0.2, ease: 'easeInOut' }}
+      <aside
+        className={`hidden lg:flex lg:flex-col sticky top-0 h-screen shrink-0 bg-white border-r border-neutral-200/60 overflow-hidden transition-all duration-200 ease-in-out ${effectiveCollapsed ? 'w-16' : 'w-64'}`}
         onMouseEnter={() => {
-          if (isCollapsed) {
-            setHoveredCollapsed(true);
-            onHoverChange?.(true);
-          }
+          if (isCollapsed) setHoveredCollapsed(true);
         }}
         onMouseLeave={() => {
           setHoveredCollapsed(false);
-          onHoverChange?.(false);
         }}
       >
         {sidebarContent}
-      </motion.aside>
+      </aside>
 
       {/* Mobile drawer overlay */}
       <AnimatePresence>

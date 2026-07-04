@@ -8,9 +8,9 @@ export default function TopNav({ title, onMenuToggle }) {
   const [showSearch, setShowSearch] = useState(false);
 
   return (
-    <header className="sticky top-0 z-20 border-b border-neutral-200/60 bg-white/80 backdrop-blur-xl shadow-xs">
-      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-20 border-b border-neutral-200/60 bg-white/80 backdrop-blur-xl">
+      <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <div className="flex min-w-0 items-center gap-3">
           <button
             onClick={onMenuToggle}
             className="rounded-lg p-2 text-neutral-500 transition-colors hover:bg-neutral-100 lg:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
@@ -18,17 +18,17 @@ export default function TopNav({ title, onMenuToggle }) {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <h1 className="text-lg font-semibold tracking-tight text-neutral-900">{title}</h1>
+          <h1 className="truncate text-lg font-semibold tracking-tight text-neutral-900">{title}</h1>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-3">
           <div className="hidden sm:block">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-56 rounded-xl border border-neutral-200 bg-neutral-50 py-2 pl-10 pr-4 text-sm text-neutral-900 placeholder:text-neutral-400 transition-all focus:w-72 focus:border-primary-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-50"
+                className="w-40 rounded-xl border border-neutral-200 bg-neutral-50 py-2 pl-10 pr-4 text-sm text-neutral-900 placeholder:text-neutral-400 transition-colors md:w-56 lg:w-64 focus:border-primary-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-50"
                 aria-label="Search"
               />
             </div>
@@ -52,7 +52,7 @@ export default function TopNav({ title, onMenuToggle }) {
             </Badge>
           </button>
 
-          <div className="ml-1 border-l border-neutral-200 pl-2">
+          <div className="border-l border-neutral-200 pl-3">
             <UserMenu />
           </div>
         </div>
