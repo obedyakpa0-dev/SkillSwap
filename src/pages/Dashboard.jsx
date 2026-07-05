@@ -21,7 +21,7 @@ const activityIcons = {
 
 function StatCard({ icon: Icon, label, value, trend, color = 'text-primary-600' }) {
   return (
-    <Card>
+    <Card variant="stat">
       <div className="flex items-start justify-between">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100">
           <Icon className={`h-5 w-5 ${color}`} />
@@ -52,21 +52,21 @@ export default function Dashboard() {
       transition={{ duration: 0.3 }}
       className="px-4 sm:px-6 lg:px-8 py-6 max-w-6xl mx-auto"
     >
-      <div className="mb-8">
+      <div className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
           {greeting}, {user?.name?.split(' ')[0] || 'Alex'}
         </h1>
         <p className="mt-1 text-sm text-neutral-500">Here is what is happening with your learning journey today.</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 mb-8">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 mb-6">
         <StatCard icon={Users} label="Active Matches" value="8" trend="+2" color="text-primary-600" />
         <StatCard icon={Calendar} label="Sessions This Week" value="5" trend="+1" color="text-indigo-600" />
         <StatCard icon={Star} label="Skill Points" value="2,750" trend="+120" color="text-amber-600" />
         <StatCard icon={Flame} label="Day Streak" value="7" color="text-orange-600" />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 mb-8">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 mb-6">
         <Card className="lg:col-span-2 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-neutral-900">Quick Actions</h2>
@@ -129,7 +129,7 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 mb-8">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 mb-6">
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-neutral-900">Upcoming Sessions</h2>
@@ -137,7 +137,7 @@ export default function Dashboard() {
           </div>
           <div className="space-y-3">
             {upcomingSessions.map((session) => (
-              <div key={session.id} className="flex items-center gap-3 rounded-xl border border-neutral-100 p-3">
+              <div key={session.id} className="flex items-center gap-3 rounded-xl border border-neutral-100 p-3 transition-colors hover:bg-neutral-50/50">
                 <Avatar initials={session.avatar} size="sm" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-neutral-900 truncate">{session.skill}</p>
@@ -177,7 +177,7 @@ export default function Dashboard() {
           </div>
           <div className="space-y-3">
             {suggestedSkills.map((skill) => (
-              <div key={skill.id} className="flex items-center justify-between rounded-xl border border-neutral-100 p-3">
+              <div key={skill.id} className="flex items-center justify-between rounded-xl border border-neutral-100 p-3 transition-colors hover:bg-neutral-50/50">
                 <div>
                   <p className="text-sm font-medium text-neutral-900">{skill.name}</p>
                   <p className="text-xs text-neutral-500">{skill.level} &middot; {skill.matches} matches</p>

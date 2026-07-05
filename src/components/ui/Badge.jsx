@@ -20,7 +20,7 @@ export default function Badge({ children, color = 'primary', variant = 'solid', 
   if (variant === 'outline') {
     return (
       <span
-        className={`inline-flex items-center rounded-full border bg-transparent px-2.5 py-0.5 text-xs font-medium ${outlineMap[color]} ${className}`}
+        className={`inline-flex items-center rounded-full border bg-transparent px-2.5 py-0.5 text-xs font-medium transition-colors ${outlineMap[color]} ${className}`}
       >
         {children}
       </span>
@@ -29,7 +29,7 @@ export default function Badge({ children, color = 'primary', variant = 'solid', 
 
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset ${colorMap[color]} ${className}`}
+      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset transition-colors ${colorMap[color]} ${className}`}
     >
       {children}
     </span>

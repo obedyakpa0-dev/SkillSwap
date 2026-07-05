@@ -291,12 +291,22 @@ body {
   outline: 2px solid var(--color-primary-600);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
+  transition: outline-offset 150ms ease;
 }
 
 .focus-ring-inset:focus-visible {
   outline: 2px solid var(--color-primary-600);
   outline-offset: -2px;
   border-radius: var(--radius-sm);
+}
+
+/* ==========================================
+   Global transition base
+   ========================================== */
+
+a, button, input, select, textarea {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 /* ==========================================

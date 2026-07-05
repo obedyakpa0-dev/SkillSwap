@@ -22,7 +22,7 @@ export default function LearningPaths() {
       transition={{ duration: 0.3 }}
       className="px-4 sm:px-6 lg:px-8 py-6 max-w-6xl mx-auto"
     >
-      <div className="mb-8">
+      <div className="mb-6">
         <h1 className="text-lg font-bold tracking-tight text-neutral-900">Learning Paths</h1>
         <p className="text-sm text-neutral-500 mt-0.5">Structured learning journeys to master new skills</p>
       </div>

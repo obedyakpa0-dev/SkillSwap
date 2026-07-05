@@ -8,6 +8,7 @@ export default function Skeleton({ className = '', variant = 'text', count = 1 }
     card: 'h-48 w-full rounded-2xl',
     thumbnail: 'h-32 w-full rounded-xl',
     paragraph: 'h-4 w-full',
+    'table-row': 'h-12 w-full',
   };
 
   if (variant === 'paragraph') {
