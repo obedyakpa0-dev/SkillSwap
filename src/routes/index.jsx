@@ -27,6 +27,7 @@ import AdminDashboard from '../pages/AdminDashboard';
 import VerificationQueue from '../pages/VerificationQueue';
 import Reports from '../pages/Reports';
 import UserManagement from '../pages/UserManagement';
+import ActivityLog from '../pages/ActivityLog';
 import NotFound from '../pages/NotFound';
 
 export default function AppRoutes() {
@@ -70,6 +71,7 @@ export default function AppRoutes() {
         <Route path="verification" element={<VerificationQueue />} />
         <Route path="reports" element={<Reports />} />
         <Route path="users" element={<UserManagement />} />
+        <Route path="activity" element={<ActivityLog />} />
       </Route>
 
       {/* 404 */}

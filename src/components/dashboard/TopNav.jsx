@@ -23,17 +23,16 @@ export default function TopNav({ title, onMenuToggle }) {
 
         <div className="flex shrink-0 items-center gap-3">
           <div className="hidden sm:block">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+            <div className="relative w-full max-w-xs">
               <input
                 type="text"
-                placeholder="Search..."
-                className="w-40 rounded-xl border border-neutral-200 bg-neutral-50 py-2 pl-10 pr-4 text-sm text-neutral-900 placeholder:text-neutral-400 transition-colors md:w-56 lg:w-64 focus:border-primary-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-50"
+                placeholder="Search"
+                className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2 pl-4 pr-10 text-sm text-neutral-900 focus:outline-none focus-visible:outline-none"
                 aria-label="Search"
               />
+              <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
             </div>
           </div>
-
           <button
             className="rounded-xl p-2 text-neutral-500 transition-colors hover:bg-neutral-100 sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
             onClick={() => setShowSearch(!showSearch)}
@@ -47,8 +46,8 @@ export default function TopNav({ title, onMenuToggle }) {
             aria-label="Notifications"
           >
             <Bell className="h-5 w-5" />
-            <Badge color="danger" className="absolute -right-0.5 -top-0.5 h-4 min-w-4 px-1 text-[10px] leading-none">
-              3
+            <Badge color="danger" className="absolute -right-3 -top-1.5 h-4 min-w-4 px-1 text-[10px] leading-none">
+              138
             </Badge>
           </button>
 
@@ -68,14 +67,14 @@ export default function TopNav({ title, onMenuToggle }) {
             className="border-t border-neutral-100 px-4 pb-3 pt-2 sm:hidden"
           >
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-10 pr-4 text-sm text-neutral-900 placeholder:text-neutral-400 transition-colors focus:border-primary-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-50"
+                className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-4 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 transition-colors focus:border-primary-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-50"
                 aria-label="Search"
                 autoFocus
               />
+              <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
             </div>
           </motion.div>
         )}

@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Search, Filter, Activity } from 'lucide-react';
 import Card from '../components/ui/Card';
-import Badge from '../components/ui/Badge';
 import SearchBar from '../components/ui/SearchBar';
-import VerificationTable from '../components/admin/VerificationTable';
+import ActivityTimeline from '../components/admin/ActivityTimeline';
 
-export default function VerificationQueue() {
+export default function ActivityLog() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
 
   const filters = [
-    { key: 'all', label: 'All', count: 5 },
-    { key: 'pending', label: 'Pending', count: 5 },
-    { key: 'approved', label: 'Approved', count: 0 },
-    { key: 'rejected', label: 'Rejected', count: 0 },
+    { key: 'all', label: 'All', count: 9 },
+    { key: 'verification', label: 'Verification', count: 3 },
+    { key: 'moderation', label: 'Moderation', count: 3 },
+    { key: 'system', label: 'System', count: 2 },
   ];
 
   return (
@@ -22,18 +21,18 @@ export default function VerificationQueue() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="px-4 sm:px-6 lg:px-8 py-6 max-w-7xl mx-auto"
+      className="px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto"
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-lg font-bold tracking-tight text-neutral-900">Verification Queue</h1>
-          <p className="text-sm text-neutral-500 mt-0.5">Review and manage student ID verifications.</p>
+          <h1 className="text-lg font-bold tracking-tight text-neutral-900">Activity Log</h1>
+          <p className="text-sm text-neutral-500 mt-0.5">Track all administrative actions across the platform.</p>
         </div>
       </div>
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">
         <SearchBar
-          placeholder="Search by name or university..."
+          placeholder="Search activity..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full sm:w-72"
@@ -60,8 +59,8 @@ export default function VerificationQueue() {
         </div>
       </div>
 
-      <Card className="p-0">
-        <VerificationTable />
+      <Card className="p-6">
+        <ActivityTimeline />
       </Card>
     </motion.div>
   );
