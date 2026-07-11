@@ -1,63 +1,47 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Calendar, Clock, ChevronLeft, ChevronRight, Check,
-  Video, MapPin, Users, User, ArrowRight, Info,
+  Calendar, Clock, Star, Award, CheckCircle2, Video, MapPin, MessageSquare, ArrowRight
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
 import Avatar from '../components/ui/Avatar';
-import Select from '../components/ui/Select';
 import { useToast } from '../components/ui/Toast';
 
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-const calendarDays = [
-  { day: 28, month: 'prev' }, { day: 29, month: 'prev' }, { day: 30, month: 'prev' },
-  { day: 1, month: 'current' }, { day: 2, month: 'current' },
-  { day: 3, month: 'current' }, { day: 4, month: 'current' },
-  { day: 5, month: 'current' }, { day: 6, month: 'current' },
-  { day: 7, month: 'current' }, { day: 8, month: 'current' },
-  { day: 9, month: 'current' }, { day: 10, month: 'current' },
-  { day: 11, month: 'current' }, { day: 12, month: 'current' },
-  { day: 13, month: 'current' }, { day: 14, month: 'current', booked: true },
-  { day: 15, month: 'current' }, { day: 16, month: 'current', booked: true },
-  { day: 17, month: 'current' }, { day: 18, month: 'current' },
-  { day: 19, month: 'current' }, { day: 20, month: 'current' },
-  { day: 21, month: 'current' }, { day: 22, month: 'current' },
-  { day: 23, month: 'current' }, { day: 24, month: 'current' },
-  { day: 25, month: 'current' }, { day: 26, month: 'current' },
-  { day: 27, month: 'current' }, { day: 28, month: 'current' },
-  { day: 29, month: 'current' }, { day: 30, month: 'current' },
-  { day: 31, month: 'current' }, { day: 1, month: 'next' }, { day: 2, month: 'next' },
-];
-
 const timeSlots = [
-  '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM',
-  '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM',
-  '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM',
-  '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM',
-  '5:00 PM', '5:30 PM', '6:00 PM',
+  { time: '9:00 AM', available: true },
+  { time: '10:00 AM', available: true },
+  { time: '11:00 AM', available: false },
+  { time: '12:00 PM', available: true },
+  { time: '1:00 PM', available: true },
+  { time: '2:00 PM', available: false },
+  { time: '3:00 PM', available: true },
+  { time: '4:00 PM', available: true },
+  { time: '5:00 PM', available: true },
+  { time: '6:00 PM', available: true },
 ];
 
-const upcomingSessions = [
-  { id: 1, partner: 'Sarah Kim', skill: 'React Fundamentals', date: 'Jul 15, 2025', time: '3:00 PM', duration: '1 hour', avatar: 'SK', type: 'video' },
-  { id: 2, partner: 'James Chen', skill: 'UI/UX Design Basics', date: 'Jul 18, 2025', time: '10:00 AM', duration: '1.5 hours', avatar: 'JC', type: 'video' },
-];
+const instructor = {
+  name: 'Sarah Kim',
+  avatar: 'SK',
+  rating: 4.9,
+  reviewCount: 127,
+  skills: ['React Development', 'TypeScript', 'Node.js', 'UI/UX Design'],
+  experience: '5+ years',
+  sessions: 340,
+  bio: 'Passionate developer and educator with extensive experience in modern web technologies. I love helping students master React and TypeScript.',
+};
 
 export default function SessionBooking() {
   const { toast } = useToast();
-  const [selectedDate, setSelectedDate] = useState(15);
+  const [selectedDate, setSelectedDate] = useState('2026-07-15');
   const [selectedTime, setSelectedTime] = useState('');
   const [duration, setDuration] = useState('60');
   const [sessionType, setSessionType] = useState('video');
-  const [currentMonth] = useState(6);
-  const [currentYear] = useState(2025);
+  const [notes, setNotes] = useState('');
   const [confirmed, setConfirmed] = useState(false);
 
-  const handleConfirm = () => {
+  const handleBookSession = () => {
     if (!selectedDate || !selectedTime) {
       toast.warning('Please select a date and time');
       return;
@@ -68,220 +52,247 @@ export default function SessionBooking() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="px-4 sm:px-6 lg:px-8 py-6 max-w-5xl mx-auto"
+      transition={{ duration: 0.4 }}
+      className="flex-1 bg-gradient-to-br from-neutral-50 via-white to-neutral-50 px-6 py-12"
     >
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-6">
-          <Card className="p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-neutral-900">
-                {MONTHS[currentMonth]} {currentYear}
-              </h2>
-              <div className="flex gap-1">
-                <Button variant="ghost" size="icon" icon={ChevronLeft} aria-label="Previous month" />
-                <Button variant="ghost" size="icon" icon={ChevronRight} aria-label="Next month" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-7 gap-1 mb-2">
-              {DAYS.map((d) => (
-                <div key={d} className="text-center text-xs font-medium text-neutral-400 py-1">
-                  {d}
-                </div>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-7 gap-1">
-              {calendarDays.map((d, i) => {
-                const isCurrent = d.month === 'current';
-                const isSelected = isCurrent && d.day === selectedDate;
-                const isToday = isCurrent && d.day === 15;
-
-                return (
-                  <button
-                    key={i}
-                    disabled={!isCurrent || d.booked}
-                    onClick={() => isCurrent && !d.booked && setSelectedDate(d.day)}
-                    className={`relative flex items-center justify-center rounded-lg py-2 text-sm transition-colors ${
-                      !isCurrent
-                        ? 'text-neutral-300 cursor-default'
-                        : d.booked
-                          ? 'text-neutral-300 cursor-not-allowed line-through'
-                          : isSelected
-                            ? 'bg-primary-600 text-white font-semibold'
-                            : 'text-neutral-700 hover:bg-neutral-100'
-                    }`}
-                  >
-                    {d.day}
-                    {isToday && !isSelected && (
-                      <span className="absolute bottom-1 h-1 w-1 rounded-full bg-primary-500" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="flex items-center gap-4 mt-4 pt-4 border-t border-neutral-100 text-xs text-neutral-500">
-              <div className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary-500" />
-                Selected
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
-                Unavailable
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-5">
-            <h2 className="text-sm font-semibold text-neutral-900 mb-4">
-              Available Times — {MONTHS[currentMonth]} {selectedDate}
-            </h2>
-            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2">
-              {timeSlots.map((time) => {
-                const isSelected = time === selectedTime;
-                return (
-                  <button
-                    key={time}
-                    onClick={() => setSelectedTime(time)}
-                    className={`rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${
-                      isSelected
-                        ? 'border-primary-500 bg-primary-50 text-primary-700'
-                        : 'border-neutral-200 text-neutral-600 hover:border-neutral-300 hover:bg-neutral-50'
-                    }`}
-                  >
-                    {time}
-                  </button>
-                );
-              })}
-            </div>
-          </Card>
+      <div className="mx-auto max-w-7xl">
+        {/* Header */}
+        <div className="mb-12">
+          <h1 className="text-4xl font-bold tracking-tight text-neutral-900">
+            Book a Session
+          </h1>
+          <p className="mt-3 text-lg text-neutral-600">
+            Choose your preferred time and start learning
+          </p>
         </div>
 
-        <div className="space-y-6">
-          <Card className="p-5">
-            <h2 className="text-sm font-semibold text-neutral-900 mb-4">Session Details</h2>
-            <div className="space-y-4">
-              <Select label="Duration" value={duration} onChange={(e) => setDuration(e.target.value)}>
-                <option value="30">30 minutes</option>
-                <option value="60">1 hour</option>
-                <option value="90">1.5 hours</option>
-                <option value="120">2 hours</option>
-              </Select>
+        {/* Two Column Layout */}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+          {/* Left Column - Instructor Info Card */}
+          <div>
+            <Card className="p-8 shadow-xl border-neutral-100/50 bg-white/80 backdrop-blur-sm">
+              <div className="space-y-8">
+                {/* Instructor Header */}
+                <div className="flex items-start gap-6">
+                  <Avatar initials={instructor.avatar} size="xl" className="ring-4 ring-primary-100" />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3">
+                      <h2 className="text-2xl font-bold text-neutral-900">{instructor.name}</h2>
+                      <CheckCircle2 className="h-6 w-6 text-primary-600" />
+                    </div>
+                    <div className="mt-2 flex items-center gap-2">
+                      <div className="flex items-center gap-1">
+                        <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
+                        <span className="text-lg font-semibold text-neutral-900">{instructor.rating}</span>
+                      </div>
+                      <span className="text-sm text-neutral-500">({instructor.reviewCount} reviews)</span>
+                    </div>
+                  </div>
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Session Type</label>
-                <div className="space-y-2">
-                  <button
-                    onClick={() => setSessionType('video')}
-                    className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-colors ${
-                      sessionType === 'video'
-                        ? 'border-primary-300 bg-primary-50'
-                        : 'border-neutral-200 hover:bg-neutral-50'
-                    }`}
-                  >
-                    <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${sessionType === 'video' ? 'bg-primary-100' : 'bg-neutral-100'}`}>
-                      <Video className={`h-4 w-4 ${sessionType === 'video' ? 'text-primary-600' : 'text-neutral-500'}`} />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-neutral-900">Video Call</p>
-                      <p className="text-xs text-neutral-500">Meet online via video</p>
-                    </div>
-                    <div className="ml-auto">
-                      <span className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
-                        sessionType === 'video' ? 'border-primary-600 bg-primary-600' : 'border-neutral-300'
-                      }`}>
-                        {sessionType === 'video' && <Check className="h-3 w-3 text-white" />}
-                      </span>
-                    </div>
-                  </button>
+                {/* Stats */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100/50 p-6">
+                    <Award className="h-8 w-8 text-primary-600 mb-3" />
+                    <p className="text-3xl font-bold text-neutral-900">{instructor.sessions}</p>
+                    <p className="text-sm text-neutral-600 mt-1">Sessions Taught</p>
+                  </div>
+                  <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-6">
+                    <Clock className="h-8 w-8 text-emerald-600 mb-3" />
+                    <p className="text-3xl font-bold text-neutral-900">{instructor.experience}</p>
+                    <p className="text-sm text-neutral-600 mt-1">Experience</p>
+                  </div>
+                </div>
 
-                  <button
-                    onClick={() => setSessionType('in-person')}
-                    className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-colors ${
-                      sessionType === 'in-person'
-                        ? 'border-primary-300 bg-primary-50'
-                        : 'border-neutral-200 hover:bg-neutral-50'
-                    }`}
-                  >
-                    <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${sessionType === 'in-person' ? 'bg-primary-100' : 'bg-neutral-100'}`}>
-                      <MapPin className={`h-4 w-4 ${sessionType === 'in-person' ? 'text-primary-600' : 'text-neutral-500'}`} />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-neutral-900">In Person</p>
-                      <p className="text-xs text-neutral-500">Meet on campus</p>
-                    </div>
-                    <div className="ml-auto">
-                      <span className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
-                        sessionType === 'in-person' ? 'border-primary-600 bg-primary-600' : 'border-neutral-300'
-                      }`}>
-                        {sessionType === 'in-person' && <Check className="h-3 w-3 text-white" />}
+                {/* Bio */}
+                <div>
+                  <h3 className="text-lg font-semibold text-neutral-900 mb-3">About</h3>
+                  <p className="text-neutral-600 leading-relaxed">{instructor.bio}</p>
+                </div>
+
+                {/* Skills */}
+                <div>
+                  <h3 className="text-lg font-semibold text-neutral-900 mb-4">Skills & Expertise</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {instructor.skills.map((skill, index) => (
+                      <span
+                        key={index}
+                        className="rounded-xl bg-gradient-to-r from-primary-100 to-primary-50 px-5 py-2.5 text-sm font-medium text-primary-900 ring-1 ring-primary-200"
+                      >
+                        {skill}
                       </span>
-                    </div>
-                  </button>
+                    ))}
+                  </div>
                 </div>
               </div>
+            </Card>
+          </div>
 
-              {selectedDate && selectedTime && (
-                <div className="rounded-xl bg-neutral-50 border border-neutral-100 p-4">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Summary</h4>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="h-4 w-4 text-neutral-400" />
-                      <span className="text-neutral-700">
-                        {MONTHS[currentMonth]} {selectedDate}, {currentYear}
+          {/* Right Column - Booking Form Card */}
+          <div>
+            <Card className="p-8 shadow-xl border-neutral-100/50 bg-white/80 backdrop-blur-sm">
+              <div className="space-y-8">
+                {/* Date Picker */}
+                <div>
+                  <label className="block text-sm font-semibold text-neutral-900 mb-4">
+                    Select Date
+                  </label>
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="w-full rounded-xl border-2 border-neutral-200 px-6 py-4 text-base font-medium text-neutral-900 transition-all focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-100"
+                  />
+                </div>
+
+                {/* Time Slot Grid */}
+                <div>
+                  <label className="block text-sm font-semibold text-neutral-900 mb-4">
+                    Available Time Slots
+                  </label>
+                  <div className="grid grid-cols-3 gap-3">
+                    {timeSlots.map((slot) => (
+                      <button
+                        key={slot.time}
+                        disabled={!slot.available}
+                        onClick={() => setSelectedTime(slot.time)}
+                        className={`rounded-xl border-2 px-4 py-3.5 text-sm font-semibold transition-all ${
+                          !slot.available
+                            ? 'cursor-not-allowed border-neutral-100 bg-neutral-50 text-neutral-300'
+                            : selectedTime === slot.time
+                            ? 'border-primary-500 bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-200'
+                            : 'border-neutral-200 text-neutral-700 hover:border-primary-300 hover:bg-primary-50'
+                        }`}
+                      >
+                        {slot.time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Duration Selector */}
+                <div>
+                  <label className="block text-sm font-semibold text-neutral-900 mb-4">
+                    Session Duration
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {['30', '60', '90', '120'].map((dur) => (
+                      <button
+                        key={dur}
+                        onClick={() => setDuration(dur)}
+                        className={`rounded-xl border-2 px-5 py-4 text-sm font-semibold transition-all ${
+                          duration === dur
+                            ? 'border-primary-500 bg-primary-50 text-primary-900 ring-2 ring-primary-200'
+                            : 'border-neutral-200 text-neutral-700 hover:border-neutral-300 hover:bg-neutral-50'
+                        }`}
+                      >
+                        {dur === '30' ? '30 min' : dur === '60' ? '1 hour' : dur === '90' ? '1.5 hours' : '2 hours'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Session Type */}
+                <div>
+                  <label className="block text-sm font-semibold text-neutral-900 mb-4">
+                    Session Format
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={() => setSessionType('video')}
+                      className={`flex flex-col items-center gap-3 rounded-xl border-2 p-5 transition-all ${
+                        sessionType === 'video'
+                          ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-200'
+                          : 'border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50'
+                      }`}
+                    >
+                      <Video className={`h-7 w-7 ${sessionType === 'video' ? 'text-primary-600' : 'text-neutral-500'}`} />
+                      <span className={`text-sm font-semibold ${sessionType === 'video' ? 'text-primary-900' : 'text-neutral-700'}`}>
+                        Video Call
                       </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Clock className="h-4 w-4 text-neutral-400" />
-                      <span className="text-neutral-700">{selectedTime} · {duration} min</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      {sessionType === 'video' ? (
-                        <Video className="h-4 w-4 text-neutral-400" />
-                      ) : (
-                        <MapPin className="h-4 w-4 text-neutral-400" />
-                      )}
-                      <span className="text-neutral-700">{sessionType === 'video' ? 'Video Call' : 'In Person'}</span>
-                    </div>
+                    </button>
+                    <button
+                      onClick={() => setSessionType('in-person')}
+                      className={`flex flex-col items-center gap-3 rounded-xl border-2 p-5 transition-all ${
+                        sessionType === 'in-person'
+                          ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-200'
+                          : 'border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50'
+                      }`}
+                    >
+                      <MapPin className={`h-7 w-7 ${sessionType === 'in-person' ? 'text-primary-600' : 'text-neutral-500'}`} />
+                      <span className={`text-sm font-semibold ${sessionType === 'in-person' ? 'text-primary-900' : 'text-neutral-700'}`}>
+                        In Person
+                      </span>
+                    </button>
                   </div>
                 </div>
-              )}
 
-              <Button
-                className="w-full"
-                size="lg"
-                icon={Calendar}
-                onClick={handleConfirm}
-              >
-                {confirmed ? 'Session Confirmed' : 'Confirm Booking'}
-              </Button>
-            </div>
-          </Card>
-
-          <Card className="p-5">
-            <h2 className="text-sm font-semibold text-neutral-900 mb-4">Your Upcoming Sessions</h2>
-            <div className="space-y-3">
-              {upcomingSessions.map((session) => (
-                <div key={session.id} className="flex items-center gap-3 rounded-xl border border-neutral-100 p-3">
-                  <Avatar initials={session.avatar} size="sm" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-neutral-900 truncate">{session.skill}</p>
-                    <p className="text-xs text-neutral-500">with {session.partner}</p>
-                    <div className="flex items-center gap-2 mt-1 text-xs text-neutral-400">
-                      <Calendar className="h-3 w-3" />
-                      <span>{session.date}</span>
-                      <Clock className="h-3 w-3 ml-1" />
-                      <span>{session.time}</span>
-                    </div>
-                  </div>
+                {/* Notes Textarea */}
+                <div>
+                  <label className="block text-sm font-semibold text-neutral-900 mb-4">
+                    Additional Notes (Optional)
+                  </label>
+                  <textarea
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    placeholder="Any specific topics or questions you'd like to cover?"
+                    rows={4}
+                    className="w-full rounded-xl border-2 border-neutral-200 px-6 py-4 text-base text-neutral-900 placeholder:text-neutral-400 transition-all focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-100 resize-none"
+                  />
                 </div>
-              ))}
-            </div>
-          </Card>
+
+                {/* Confirmation Section */}
+                {selectedDate && selectedTime && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="rounded-2xl bg-gradient-to-br from-neutral-50 to-neutral-100/50 p-6 space-y-3"
+                  >
+                    <h4 className="text-sm font-semibold text-neutral-900">Booking Summary</h4>
+                    <div className="space-y-2.5 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-600">Date</span>
+                        <span className="font-semibold text-neutral-900">{new Date(selectedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-600">Time</span>
+                        <span className="font-semibold text-neutral-900">{selectedTime}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-600">Duration</span>
+                        <span className="font-semibold text-neutral-900">{duration === '30' ? '30 min' : duration === '60' ? '1 hour' : duration === '90' ? '1.5 hours' : '2 hours'}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-600">Format</span>
+                        <span className="font-semibold text-neutral-900">{sessionType === 'video' ? 'Video Call' : 'In Person'}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Book Button */}
+                <Button
+                  onClick={handleBookSession}
+                  disabled={confirmed}
+                  className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg shadow-primary-200 hover:shadow-xl hover:shadow-primary-300 py-5 text-base font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  {confirmed ? (
+                    <>
+                      <CheckCircle2 className="h-5 w-5" />
+                      Session Confirmed
+                    </>
+                  ) : (
+                    <>
+                      Book Session
+                      <ArrowRight className="h-5 w-5" />
+                    </>
+                  )}
+                </Button>
+              </div>
+            </Card>
+          </div>
         </div>
       </div>
     </motion.div>

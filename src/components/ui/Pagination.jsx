@@ -1,5 +1,4 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Button from './Button';
 
 export default function Pagination({
   currentPage = 1,
@@ -7,7 +6,7 @@ export default function Pagination({
   onPageChange,
   className = '',
 }) {
-  if (totalPages <= 1) return null;
+  if (!Number.isFinite(totalPages) || totalPages <= 1) return null;
 
   const pages = [];
   const maxVisible = 5;
@@ -22,57 +21,77 @@ export default function Pagination({
   }
 
   return (
-    <nav className={`flex items-center justify-center gap-1 ${className}`} aria-label="Pagination">
-      <Button
-        variant="ghost"
-        size="sm"
+    <nav
+      className={`flex items-center justify-center gap-1.5 ${className}`}
+      aria-label="Pagination"
+    >
+      <button
         disabled={currentPage <= 1}
         onClick={() => onPageChange(currentPage - 1)}
         aria-label="Previous page"
+        className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
       >
-        <ChevronLeft className="h-4 w-4" />
-      </Button>
+        <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+      </button>
 
       {start > 1 && (
         <>
-          <Button variant="ghost" size="sm" onClick={() => onPageChange(1)}>
+          <button
+            onClick={() => onPageChange(1)}
+            aria-label="Page 1"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100"
+          >
             1
-          </Button>
-          {start > 2 && <span className="px-1 text-neutral-400">...</span>}
+          </button>
+          {start > 2 && (
+            <span className="px-1 text-neutral-400" aria-hidden="true">
+              ...
+            </span>
+          )}
         </>
       )}
 
       {pages.map((page) => (
-        <Button
+        <button
           key={page}
-          variant={page === currentPage ? 'primary' : 'ghost'}
-          size="sm"
           onClick={() => onPageChange(page)}
           aria-current={page === currentPage ? 'page' : undefined}
           aria-label={`Page ${page}`}
+          className={`flex h-9 w-9 items-center justify-center rounded-xl text-sm font-medium transition-colors ${
+            page === currentPage
+              ? 'bg-primary-600 text-white shadow-sm'
+              : 'text-neutral-600 hover:bg-neutral-100'
+          }`}
         >
           {page}
-        </Button>
+        </button>
       ))}
 
       {end < totalPages && (
         <>
-          {end < totalPages - 1 && <span className="px-1 text-neutral-400">...</span>}
-          <Button variant="ghost" size="sm" onClick={() => onPageChange(totalPages)}>
+          {end < totalPages - 1 && (
+            <span className="px-1 text-neutral-400" aria-hidden="true">
+              ...
+            </span>
+          )}
+          <button
+            onClick={() => onPageChange(totalPages)}
+            aria-label={`Page ${totalPages}`}
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100"
+          >
             {totalPages}
-          </Button>
+          </button>
         </>
       )}
 
-      <Button
-        variant="ghost"
-        size="sm"
+      <button
         disabled={currentPage >= totalPages}
         onClick={() => onPageChange(currentPage + 1)}
         aria-label="Next page"
+        className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
       >
-        <ChevronRight className="h-4 w-4" />
-      </Button>
+        <ChevronRight className="h-4 w-4" aria-hidden="true" />
+      </button>
     </nav>
   );
 }

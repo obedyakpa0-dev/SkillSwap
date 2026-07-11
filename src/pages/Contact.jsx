@@ -1,60 +1,123 @@
 import { motion } from 'framer-motion';
-import { Mail, Clock, MessageSquare, Globe, ExternalLink, Link2 } from 'lucide-react';
+import { Mail, Clock, MessageSquare, Globe, ExternalLink, Link2, Send } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Textarea from '../components/ui/Textarea';
-import Card from '../components/ui/Card';
+
+const contactItems = [
+  {
+    icon: Mail,
+    title: 'Email Support',
+    desc: 'Our friendly team is here to help.',
+    value: 'support@skillswap.dev',
+    gradient: 'from-primary-500 to-primary-600',
+  },
+  {
+    icon: Clock,
+    title: 'Response Time',
+    desc: 'We typically respond within',
+    value: '24 hours',
+    gradient: 'from-emerald-500 to-emerald-600',
+  },
+  {
+    icon: Globe,
+    title: 'Community Forum',
+    desc: 'Get answers from the community',
+    value: 'Visit Forum →',
+    gradient: 'from-accent-500 to-accent-600',
+  },
+];
 
 export default function Contact() {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="overflow-x-hidden"
+    >
       {/* Hero */}
-      <section className="px-4 pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <span className="inline-flex items-center rounded-full border border-primary-200 bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700">
-            Contact
-          </span>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
-            Get in Touch
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-neutral-500">
-            Have a question, suggestion, or just want to say hello? We would love to hear from you.
-          </p>
-        </motion.div>
+      <section className="relative overflow-hidden py-20 sm:py-24 lg:py-28">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary-50 via-white to-accent-50/30" />
+        <div className="absolute right-0 top-0 -z-10 h-80 w-80 rounded-full bg-primary-100/30 blur-3xl" />
+
+        <div className="mx-auto max-w-3xl px-5 sm:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-white/80 px-4 py-2 text-sm font-medium text-primary-700 shadow-sm backdrop-blur-sm">
+              <MessageSquare className="h-4 w-4" />
+              Contact Us
+            </span>
+            <h1 className="mt-7 text-[2.5rem] font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-[3.5rem]">
+              Let&apos;s <span className="text-gradient">Talk</span>
+            </h1>
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-neutral-600 sm:text-lg">
+              Have a question, suggestion, or just want to say hello? We&apos;d love to hear from you.
+              Our team is always happy to help.
+            </p>
+          </motion.div>
+        </div>
       </section>
 
-      {/* Contact Form + Info */}
-      <section className="bg-neutral-50 px-4 py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-10 lg:grid-cols-3">
-            {/* Form */}
+      {/* Info Cards Row */}
+      <section className="bg-white py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="grid gap-6 sm:grid-cols-3">
+            {contactItems.map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="group rounded-2xl border border-neutral-200/60 bg-white p-7 shadow-card transition-all hover:border-neutral-300 hover:shadow-card-hover"
+              >
+                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${item.gradient} shadow-lg`}>
+                  <item.icon className="h-7 w-7 text-white" />
+                </div>
+                <h3 className="mt-5 text-base font-bold text-neutral-900">{item.title}</h3>
+                <p className="mt-1.5 text-sm text-neutral-500">{item.desc}</p>
+                <p className="mt-1.5 text-base font-semibold text-neutral-900">{item.value}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Form + Social */}
+      <section className="bg-gradient-to-b from-neutral-50 to-white py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="grid gap-8 lg:grid-cols-3 lg:gap-12">
+            {/* Form — takes 2/3 */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.6 }}
               className="lg:col-span-2"
             >
-              <Card className="p-6 sm:p-8">
-                <h2 className="text-lg font-semibold text-neutral-900">Send us a message</h2>
-                <p className="mt-1 text-sm text-neutral-500">
-                  We typically respond within 24 hours.
+              <div className="rounded-3xl border border-neutral-200/60 bg-white p-8 shadow-xl sm:p-10">
+                <h2 className="text-2xl font-bold tracking-tight text-neutral-900">
+                  Send us a message
+                </h2>
+                <p className="mt-2 text-base text-neutral-600">
+                  Fill in the form below and we&apos;ll get back to you within 24 hours.
                 </p>
-                <form className="mt-6 space-y-5" onSubmit={(e) => e.preventDefault()}>
+
+                <form className="mt-8 space-y-5" onSubmit={(e) => e.preventDefault()}>
                   <div className="grid gap-5 sm:grid-cols-2">
                     <Input
-                      label="Name"
-                      placeholder="Your full name"
+                      label="Full Name"
+                      placeholder="John Doe"
                       id="contact-name"
                       required
                     />
                     <Input
-                      label="Email"
+                      label="Email Address"
                       type="email"
                       placeholder="you@university.edu"
                       id="contact-email"
@@ -71,64 +134,65 @@ export default function Contact() {
                     label="Message"
                     placeholder="Tell us more about your question or feedback..."
                     id="contact-message"
-                    rows={5}
+                    rows={6}
                     required
                   />
-                  <Button type="submit" icon={MessageSquare}>
-                    Send Message
-                  </Button>
+                  <div className="pt-3">
+                    <Button type="submit" icon={Send} size="lg" className="w-full sm:w-auto">
+                      Send Message
+                    </Button>
+                  </div>
                 </form>
-              </Card>
+              </div>
             </motion.div>
 
-            {/* Info sidebar */}
+            {/* Sidebar — 1/3 */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               className="space-y-6"
             >
-              <Card className="p-6">
-                <Mail className="h-5 w-5 text-primary-600" />
-                <h3 className="mt-3 text-sm font-semibold text-neutral-900">Email</h3>
-                <p className="mt-1 text-sm text-neutral-500">support@skillswap.dev</p>
-              </Card>
-
-              <Card className="p-6">
-                <Clock className="h-5 w-5 text-primary-600" />
-                <h3 className="mt-3 text-sm font-semibold text-neutral-900">Response Time</h3>
-                <p className="mt-1 text-sm text-neutral-500">
-                  We aim to respond within 24 hours during business days.
+              {/* Social links */}
+              <div className="rounded-2xl border border-neutral-200/60 bg-white p-7 shadow-card">
+                <h3 className="text-base font-bold text-neutral-900">Follow Us</h3>
+                <p className="mt-2 text-sm text-neutral-600">
+                  Stay up to date with the latest from SkillSwap.
                 </p>
-              </Card>
-
-              <Card className="p-6">
-                <h3 className="text-sm font-semibold text-neutral-900">Follow Us</h3>
-                <div className="mt-3 flex gap-3">
-                  <a
-                    href="#"
-                    aria-label="GitHub"
-                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-neutral-200 text-neutral-500 transition-colors hover:border-primary-200 hover:text-primary-600"
-                  >
-                    <Globe className="h-4 w-4" />
-                  </a>
-                  <a
-                    href="#"
-                    aria-label="Twitter"
-                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-neutral-200 text-neutral-500 transition-colors hover:border-primary-200 hover:text-primary-600"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-                  <a
-                    href="#"
-                    aria-label="LinkedIn"
-                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-neutral-200 text-neutral-500 transition-colors hover:border-primary-200 hover:text-primary-600"
-                  >
-                    <Link2 className="h-4 w-4" />
-                  </a>
+                <div className="mt-5 flex flex-wrap gap-2.5">
+                  {[
+                    { icon: Globe, label: 'Website', href: '#' },
+                    { icon: ExternalLink, label: 'Twitter', href: '#' },
+                    { icon: Link2, label: 'LinkedIn', href: '#' },
+                  ].map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      aria-label={social.label}
+                      className="flex items-center gap-2 rounded-xl border border-neutral-200 px-4 py-2.5 text-sm font-medium text-neutral-600 transition-all hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700"
+                    >
+                      <social.icon className="h-4 w-4" />
+                      {social.label}
+                    </a>
+                  ))}
                 </div>
-              </Card>
+              </div>
+
+              {/* FAQ link */}
+              <div className="rounded-2xl border border-primary-100 bg-gradient-to-br from-primary-50 to-white p-7">
+                <h3 className="text-base font-bold text-neutral-900">Check the FAQ first</h3>
+                <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+                  Many common questions are already answered in our FAQ section. Take a look before
+                  reaching out — you might find your answer instantly.
+                </p>
+                <a
+                  href="/faq"
+                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-600 transition-colors hover:text-primary-700"
+                >
+                  Browse FAQ →
+                </a>
+              </div>
             </motion.div>
           </div>
         </div>

@@ -15,7 +15,7 @@ export default function DashboardLayout() {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen bg-neutral-50">
+    <div className="flex min-h-screen overflow-x-hidden bg-neutral-50/70">
       <Sidebar
         isMobileOpen={isMobileOpen}
         onMobileClose={() => setIsMobileOpen(false)}
@@ -29,7 +29,7 @@ export default function DashboardLayout() {
           onMenuToggle={() => setIsMobileOpen(true)}
         />
         <Breadcrumb />
-        <main className="flex flex-1 flex-col">
+        <main className="flex flex-1 flex-col overflow-x-hidden">
           <Outlet />
         </main>
       </div>

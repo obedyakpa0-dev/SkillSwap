@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import {
   Code, Palette, Database, ShieldCheck, TrendingUp,
   Briefcase, ArrowRight, Clock, Star, Users, BookOpen,
-  ChevronRight, Play, CheckCircle, BarChart3,
+  ChevronRight, Play, CheckCircle, BarChart3, Sparkles,
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
@@ -16,7 +16,8 @@ const learningPaths = [
     description: 'Master modern frontend technologies including React, TypeScript, and CSS frameworks.',
     icon: Code,
     color: 'bg-blue-100 text-blue-600',
-    borderColor: 'border-blue-200',
+    gradientFrom: 'from-blue-500',
+    gradientTo: 'to-blue-600',
     level: 'Beginner to Advanced',
     duration: '12 weeks',
     lessons: 24,
@@ -31,7 +32,8 @@ const learningPaths = [
     description: 'Build scalable server-side applications with Node.js, APIs, and databases.',
     icon: Database,
     color: 'bg-emerald-100 text-emerald-600',
-    borderColor: 'border-emerald-200',
+    gradientFrom: 'from-emerald-500',
+    gradientTo: 'to-emerald-600',
     level: 'Intermediate',
     duration: '10 weeks',
     lessons: 20,
@@ -46,7 +48,8 @@ const learningPaths = [
     description: 'Learn user-centered design principles, prototyping, and design systems.',
     icon: Palette,
     color: 'bg-purple-100 text-purple-600',
-    borderColor: 'border-purple-200',
+    gradientFrom: 'from-purple-500',
+    gradientTo: 'to-purple-600',
     level: 'Beginner to Intermediate',
     duration: '8 weeks',
     lessons: 18,
@@ -61,7 +64,8 @@ const learningPaths = [
     description: 'Dive into data analysis, machine learning, and statistical modeling.',
     icon: BarChart3,
     color: 'bg-amber-100 text-amber-600',
-    borderColor: 'border-amber-200',
+    gradientFrom: 'from-amber-500',
+    gradientTo: 'to-amber-600',
     level: 'Advanced',
     duration: '14 weeks',
     lessons: 28,
@@ -76,7 +80,8 @@ const learningPaths = [
     description: 'Understand security fundamentals, ethical hacking, and network defense.',
     icon: ShieldCheck,
     color: 'bg-red-100 text-red-600',
-    borderColor: 'border-red-200',
+    gradientFrom: 'from-red-500',
+    gradientTo: 'to-red-600',
     level: 'Intermediate',
     duration: '10 weeks',
     lessons: 20,
@@ -91,7 +96,8 @@ const learningPaths = [
     description: 'Learn business strategy, marketing, and startup fundamentals.',
     icon: Briefcase,
     color: 'bg-indigo-100 text-indigo-600',
-    borderColor: 'border-indigo-200',
+    gradientFrom: 'from-indigo-500',
+    gradientTo: 'to-indigo-600',
     level: 'Beginner',
     duration: '6 weeks',
     lessons: 14,
@@ -102,84 +108,268 @@ const learningPaths = [
   },
 ];
 
+const difficultyColors = {
+  'Beginner': 'bg-emerald-100 text-emerald-700 border-emerald-200',
+  'Beginner to Intermediate': 'bg-blue-100 text-blue-700 border-blue-200',
+  'Intermediate': 'bg-amber-100 text-amber-700 border-amber-200',
+  'Beginner to Advanced': 'bg-purple-100 text-purple-700 border-purple-200',
+  'Advanced': 'bg-red-100 text-red-700 border-red-200',
+};
+
 export default function LearningPaths() {
   const [paths] = useState(learningPaths);
+  const featuredPath = paths.find(p => p.id === 2); // Backend Development as featured
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="px-4 sm:px-6 lg:px-8 py-6 max-w-6xl mx-auto"
+      transition={{ duration: 0.5 }}
+      className="flex-1"
     >
-      <div className="mb-8">
-        <h1 className="text-lg font-bold tracking-tight text-neutral-900">Learning Paths</h1>
-        <p className="text-sm text-neutral-500 mt-0.5">Structured learning journeys to master new skills</p>
+      {/* Hero Section */}
+      <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 py-16 px-6 sm:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <Sparkles className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-white/90 text-sm font-semibold uppercase tracking-wider">Structured Learning</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Master New Skills with Expert-Curated Paths
+            </h1>
+            <p className="text-lg text-white/90 max-w-2xl">
+              Follow structured journeys designed to take you from beginner to expert in the most in-demand skills
+            </p>
+          </motion.div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {paths.map((path) => {
-          const Icon = path.icon;
-          const isStarted = path.progress > 0;
+      {/* Main Content */}
+      <div className="px-6 sm:px-8 lg:px-12 py-12 max-w-7xl mx-auto">
+        {/* Featured Path Hero Card */}
+        {featuredPath && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mb-12"
+          >
+            <Card className={`p-0 overflow-hidden bg-gradient-to-br ${featuredPath.gradientFrom} ${featuredPath.gradientTo} text-white relative`}>
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE4YzAtOS45NC04LjA2LTE4LTE4LTE4UzAgOC4wNiAwIDE4aDE4YzAgOS45NCA4LjA2IDE4IDE4IDE4VjE4aC0wek0zNiAzNmMwLTkuOTQtOC4wNi0xOC0xOC0xOHYxOGgxOHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-10"></div>
+              
+              <div className="relative p-10">
+                <div className="flex flex-col lg:flex-row gap-10 items-start lg:items-center">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                        <featuredPath.icon className="h-7 w-7 text-white" />
+                      </div>
+                      <Badge color="primary" variant="solid" className="bg-white/25 text-white border-white/40 backdrop-blur-sm text-xs font-bold">
+                        FEATURED PATH
+                      </Badge>
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                      {featuredPath.title}
+                    </h2>
+                    <p className="text-base text-white/90 leading-relaxed mb-6 max-w-2xl">
+                      {featuredPath.description}
+                    </p>
 
-          return (
-            <Card key={path.id} hover className="flex flex-col p-5">
-              <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${path.color} mb-4`}>
-                <Icon className="h-6 w-6" />
-              </div>
+                    {/* Progress Bar for Featured */}
+                    {featuredPath.progress > 0 && (
+                      <div className="mb-6 max-w-md">
+                        <div className="flex items-center justify-between text-sm mb-2">
+                          <span className="text-white/90 font-semibold">Your Progress</span>
+                          <span className="text-white font-bold">{featuredPath.progress}%</span>
+                        </div>
+                        <div className="h-3 w-full rounded-full bg-white/20 backdrop-blur-sm overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${featuredPath.progress}%` }}
+                            transition={{ duration: 1, delay: 0.5 }}
+                            className="h-3 rounded-full bg-white shadow-lg"
+                          />
+                        </div>
+                      </div>
+                    )}
 
-              <div className="flex items-center gap-2 mb-2">
-                <h3 className="text-sm font-semibold text-neutral-900">{path.title}</h3>
-                <Badge color="primary" variant="solid" className="text-[10px]">{path.level}</Badge>
-              </div>
+                    <div className="flex flex-wrap items-center gap-6 text-sm text-white/90 mb-6">
+                      <div className="flex items-center gap-2">
+                        <BookOpen className="h-5 w-5" />
+                        <span className="font-semibold">{featuredPath.lessons} lessons</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-5 w-5" />
+                        <span className="font-semibold">{featuredPath.duration}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Users className="h-5 w-5" />
+                        <span className="font-semibold">{featuredPath.enrolled} enrolled</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Star className="h-5 w-5 fill-white" />
+                        <span className="font-semibold">{featuredPath.rating} rating</span>
+                      </div>
+                    </div>
 
-              <p className="text-xs text-neutral-500 leading-relaxed flex-1 mb-4">{path.description}</p>
-
-              {isStarted && (
-                <div className="mb-4">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-neutral-500">Progress</span>
-                    <span className="font-medium text-primary-600">{path.progress}%</span>
+                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                      <Button
+                        size="lg"
+                        icon={featuredPath.progress > 0 ? Play : ArrowRight}
+                        className="bg-white text-emerald-700 hover:bg-white/90 border-0 shadow-xl font-bold px-8 py-4"
+                      >
+                        {featuredPath.progress > 0 ? 'Continue Learning' : 'Start Learning Path'}
+                      </Button>
+                    </motion.div>
                   </div>
-                  <div className="h-1.5 w-full rounded-full bg-neutral-100">
-                    <div className="h-1.5 rounded-full bg-primary-600 transition-all" style={{ width: `${path.progress}%` }} />
+
+                  {/* Module List */}
+                  <div className="lg:w-96 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                    <h3 className="text-base font-bold text-white mb-4">What You'll Learn</h3>
+                    <div className="space-y-3">
+                      {featuredPath.modules.map((module, index) => (
+                        <motion.div
+                          key={module}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
+                          className="flex items-center gap-3 text-sm text-white/90"
+                        >
+                          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                            <CheckCircle className="h-4 w-4" />
+                          </div>
+                          <span className="font-medium">{module}</span>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              )}
-
-              <div className="flex items-center gap-3 mb-4 text-xs text-neutral-400">
-                <div className="flex items-center gap-1">
-                  <BookOpen className="h-3.5 w-3.5" />
-                  {path.lessons} lessons
-                </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="h-3.5 w-3.5" />
-                  {path.duration}
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {path.modules.slice(0, 3).map((mod) => (
-                  <Badge key={mod} color="neutral" variant="outline" className="text-[10px]">{mod}</Badge>
-                ))}
-                {path.modules.length > 3 && (
-                  <Badge color="neutral" variant="outline" className="text-[10px]">+{path.modules.length - 3} more</Badge>
-                )}
-              </div>
-
-              <div className="mt-auto flex items-center justify-between">
-                <div className="flex items-center gap-1 text-xs">
-                  <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                  <span className="font-medium text-neutral-700">{path.rating}</span>
-                  <span className="text-neutral-400">· {path.enrolled} enrolled</span>
-                </div>
-                <Button size="sm" icon={isStarted ? Play : ArrowRight}>
-                  {isStarted ? 'Continue' : 'Start'}
-                </Button>
               </div>
             </Card>
-          );
-        })}
+          </motion.div>
+        )}
+
+        {/* All Paths Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-neutral-900 mb-2">All Learning Paths</h2>
+          <p className="text-base text-neutral-600">Choose the path that matches your goals and skill level</p>
+        </div>
+
+        {/* Paths Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {paths.map((path, index) => {
+            const Icon = path.icon;
+            const isStarted = path.progress > 0;
+
+            return (
+              <motion.div
+                key={path.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+              >
+                <Card className="p-6 flex flex-col h-full group hover:shadow-2xl transition-shadow duration-300">
+                  {/* Icon with Gradient Background */}
+                  <motion.div
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${path.gradientFrom} ${path.gradientTo} mb-6 shadow-lg`}
+                  >
+                    <Icon className="h-7 w-7 text-white" />
+                  </motion.div>
+
+                  {/* Title & Difficulty */}
+                  <div className="mb-4">
+                    <h3 className="text-lg font-bold text-neutral-900 mb-3 group-hover:text-primary-600 transition-colors">
+                      {path.title}
+                    </h3>
+                    <Badge
+                      color="neutral"
+                      variant="outline"
+                      className={`text-xs font-bold border ${difficultyColors[path.level] || 'bg-neutral-100 text-neutral-700'}`}
+                    >
+                      {path.level}
+                    </Badge>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-sm text-neutral-600 leading-relaxed mb-6 flex-1">
+                    {path.description}
+                  </p>
+
+                  {/* Progress Bar (if enrolled) */}
+                  {isStarted && (
+                    <div className="mb-6">
+                      <div className="flex items-center justify-between text-xs mb-2">
+                        <span className="text-neutral-600 font-semibold">Your Progress</span>
+                        <span className="font-bold text-primary-600">{path.progress}%</span>
+                      </div>
+                      <div className="h-2 w-full rounded-full bg-neutral-100 overflow-hidden">
+                        <div
+                          className={`h-2 rounded-full bg-gradient-to-r ${path.gradientFrom} ${path.gradientTo} transition-all duration-500`}
+                          style={{ width: `${path.progress}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Stats */}
+                  <div className="flex items-center gap-4 mb-6 text-xs text-neutral-500">
+                    <div className="flex items-center gap-1.5">
+                      <BookOpen className="h-4 w-4" />
+                      <span className="font-semibold">{path.lessons} lessons</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="h-4 w-4" />
+                      <span className="font-semibold">{path.duration}</span>
+                    </div>
+                  </div>
+
+                  {/* Modules Tags */}
+                  <div className="flex flex-wrap gap-2 mb-6 pb-6 border-b border-neutral-100">
+                    {path.modules.slice(0, 3).map((mod) => (
+                      <Badge key={mod} color="neutral" variant="solid" className="text-xs">
+                        {mod}
+                      </Badge>
+                    ))}
+                    {path.modules.length > 3 && (
+                      <Badge color="neutral" variant="solid" className="text-xs">
+                        +{path.modules.length - 3} more
+                      </Badge>
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4 text-xs">
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                        <span className="font-bold text-neutral-900">{path.rating}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-neutral-500">
+                        <Users className="h-4 w-4" />
+                        <span className="font-semibold">{path.enrolled}</span>
+                      </div>
+                    </div>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button size="md" icon={isStarted ? Play : ArrowRight} className="shadow-lg">
+                        {isStarted ? 'Continue' : 'Start'}
+                      </Button>
+                    </motion.div>
+                  </div>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </motion.div>
   );

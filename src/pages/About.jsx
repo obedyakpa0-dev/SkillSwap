@@ -25,60 +25,96 @@ const values = [
   },
 ];
 
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
 export default function About() {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-      {/* Hero */}
-      <section className="px-4 pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <span className="inline-flex items-center rounded-full border border-primary-200 bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700">
-            About Us
-          </span>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
-            Empowering Students Through Peer Learning
-          </h1>
-          <p className="mt-4 text-base leading-relaxed text-neutral-500 sm:text-lg">
-            SkillSwap was born from a simple idea: the best way to learn is to teach. We bring
-            verified students together to exchange knowledge, build skills, and grow as a community.
-          </p>
-        </motion.div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="overflow-x-hidden"
+    >
+      
+      {/* ── Hero ── */}
+      <section className="bg-white py-20 sm:py-24 lg:py-28">
+        <div className="mx-auto max-w-4xl px-5 sm:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            {/* badge pill */}
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-primary-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-primary-700">
+              <Heart className="h-4 w-4" aria-hidden="true" />
+              About Us
+            </span>
+
+            {/* display headline */}
+            <h1 className="mt-7 text-[2.5rem] font-black tracking-tight text-neutral-900 sm:text-5xl lg:text-[3.5rem]">
+              Empowering Students Through{' '}
+              <span className="text-gradient">Peer Learning</span>
+            </h1>
+
+            {/* desc */}
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-neutral-600 sm:text-lg">
+              SkillSwap was born from a simple idea: the best way to learn is to teach. We bring
+              verified students together to exchange knowledge, build skills, and grow as a community.
+            </p>
+          </motion.div>
+        </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="bg-neutral-50 px-4 py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-8 lg:grid-cols-2">
+      {/* ── Mission & Vision ── */}
+      <section className="bg-gradient-to-b from-neutral-50 to-white py-20 sm:py-24 lg:py-28">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.6 }}
             >
-              <Card variant="info" className="h-full">
-                <Target className="h-8 w-8 text-primary-600" />
-                <h2 className="mt-4 text-xl font-bold text-neutral-900">Our Mission</h2>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+              <Card variant="info" hover className="flex h-full flex-col p-8 shadow-card hover:shadow-card-hover sm:p-10">
+                {/* gradient icon container */}
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/30">
+                  <Target className="h-7 w-7 text-white" aria-hidden="true" />
+                </div>
+                <h2 className="mt-6 text-2xl font-bold tracking-tight text-neutral-900">
+                  Our Mission
+                </h2>
+                <p className="mt-4 text-base leading-relaxed text-neutral-600">
                   To create a trusted platform where every student can freely share their knowledge,
                   learn new skills, and build meaningful connections — regardless of their background
                   or experience level.
                 </p>
               </Card>
             </motion.div>
+
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <Card variant="info" className="h-full">
-                <Eye className="h-8 w-8 text-primary-600" />
-                <h2 className="mt-4 text-xl font-bold text-neutral-900">Our Vision</h2>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+              <Card variant="info" hover className="flex h-full flex-col p-8 shadow-card hover:shadow-card-hover sm:p-10">
+                {/* gradient icon container */}
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent-500 to-accent-600 shadow-lg shadow-accent-500/30">
+                  <Eye className="h-7 w-7 text-white" aria-hidden="true" />
+                </div>
+                <h2 className="mt-6 text-2xl font-bold tracking-tight text-neutral-900">
+                  Our Vision
+                </h2>
+                <p className="mt-4 text-base leading-relaxed text-neutral-600">
                   A world where peer-to-peer learning is as natural as attending a lecture. We
                   envision a global community of students who lift each other up through shared
                   knowledge and collaboration.
@@ -89,23 +125,25 @@ export default function About() {
         </div>
       </section>
 
-      {/* Our Story */}
-      <section className="px-4 py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+      {/* ── Our Story ── */}
+      <section className="bg-white py-20 sm:py-24 lg:py-28">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            {/* left = text */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.6 }}
             >
-              <span className="inline-flex items-center rounded-full border border-primary-200 bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700">
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-primary-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-primary-700">
+                <Sparkles className="h-4 w-4" aria-hidden="true" />
                 Our Story
               </span>
-              <h2 className="mt-4 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
+              <h2 className="mt-6 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
                 From a Dorm Room to a Movement
               </h2>
-              <div className="mt-4 space-y-4 text-sm leading-relaxed text-neutral-500">
+              <div className="mt-5 space-y-4 text-base leading-relaxed text-neutral-600">
                 <p>
                   SkillSwap started in 2024 when a group of university students realized that the
                   most effective study sessions happened outside the classroom — between peers
@@ -123,31 +161,38 @@ export default function About() {
                 </p>
               </div>
             </motion.div>
+
+            {/* right = elevated white card */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-10 lg:mt-0"
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="rounded-3xl border border-neutral-200/60 bg-white p-8 shadow-soft-lg">
-                <Heart className="h-10 w-10 text-primary-600" />
-                <h3 className="mt-4 text-lg font-semibold text-neutral-900">Why We Do This</h3>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-500">
-                  Education should be collaborative, not competitive. By creating a space where
-                  students can teach and learn from each other, we break down barriers and build
-                  confidence. Every skill shared is a step toward a more connected and capable
-                  generation.
-                </p>
+              <div className="relative rounded-3xl border border-neutral-200/60 bg-white p-8 shadow-xl sm:p-10">
+                {/* decorative blob */}
+                <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-gradient-to-br from-primary-400/20 to-accent-400/20 blur-2xl" />
+                <div className="relative">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-danger-500 to-danger-600 shadow-lg shadow-danger-500/30">
+                    <Heart className="h-7 w-7 fill-white text-white" aria-hidden="true" />
+                  </div>
+                  <h3 className="mt-6 text-xl font-bold text-neutral-900">Why We Do This</h3>
+                  <p className="mt-4 text-base leading-relaxed text-neutral-600">
+                    Education should be collaborative, not competitive. By creating a space where
+                    students can teach and learn from each other, we break down barriers and build
+                    confidence. Every skill shared is a step toward a more connected and capable
+                    generation.
+                  </p>
+                </div>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Core Values */}
-      <section className="bg-neutral-50 px-4 py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-6xl">
+      {/* ── Core Values ── */}
+      <section className="bg-gradient-to-b from-white to-neutral-50 py-20 sm:py-24 lg:py-28">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -158,29 +203,30 @@ export default function About() {
             <h2 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
               Our Core Values
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-neutral-500">
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-neutral-600">
               These principles guide every decision we make and every feature we build.
             </p>
           </motion.div>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {values.map((value, i) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <Card className="h-full text-center">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-50">
-                    <value.icon className="h-6 w-6 text-primary-600" />
+
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            {values.map((value) => (
+              <motion.div key={value.title} variants={item} className="flex">
+                <Card hover className="flex w-full flex-col p-7 text-center shadow-card hover:shadow-card-hover">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/30">
+                    <value.icon className="h-8 w-8 text-white" aria-hidden="true" />
                   </div>
-                  <h3 className="mt-4 text-base font-semibold text-neutral-900">{value.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-neutral-500">{value.desc}</p>
+                  <h3 className="mt-5 text-lg font-bold text-neutral-900">{value.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-neutral-600">{value.desc}</p>
                 </Card>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
     </motion.div>

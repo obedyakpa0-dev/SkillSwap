@@ -10,6 +10,7 @@ import Button from '../components/ui/Button';
 import SearchBar from '../components/ui/SearchBar';
 import EmptyState from '../components/ui/EmptyState';
 
+// ─── Data ─────────────────────────────────────────────────────────────────────
 const conversations = [
   { id: 1, name: 'Emily Parker', avatar: 'EP', lastMessage: 'Sure! Let me share my screen with the design...', time: '9:41 AM', unread: 2, online: true },
   { id: 2, name: 'David Wilson', avatar: 'DW', lastMessage: 'Thanks for the session today! Really helpful.', time: 'Yesterday', unread: 0, online: false },
@@ -29,6 +30,7 @@ const sampleMessages = [
   { id: 7, sender: 'Emily Parker', text: 'Sure! Let me share my screen with the design prototype I am working on.', time: '9:41 AM', isMe: false },
 ];
 
+// ─── Component ────────────────────────────────────────────────────────────────
 export default function Messages() {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [messageText, setMessageText] = useState('');
@@ -45,75 +47,130 @@ export default function Messages() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="flex flex-1 min-h-0 overflow-hidden"
+      className="flex min-h-0 flex-1 overflow-hidden"
     >
-      <div className={`flex flex-col border-r border-neutral-200/60 bg-white ${
-        selectedConversation ? 'hidden sm:flex sm:w-80 lg:w-96' : 'flex w-full sm:w-80 lg:w-96'
-      }`}>
-        <div className="border-b border-neutral-100 p-4">
-          <h2 className="text-sm font-semibold text-neutral-900 mb-3">Messages</h2>
+      {/* ── Conversation List Sidebar ──────────────────────────────────────── */}
+      <div
+        className={`flex flex-col border-r border-neutral-200/80 bg-white ${
+          selectedConversation ? 'hidden sm:flex sm:w-80 lg:w-96' : 'flex w-full sm:w-80 lg:w-96'
+        }`}
+      >
+        {/* Sidebar Header */}
+        <div className="border-b border-neutral-100 px-5 py-5">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-xl font-bold tracking-tight text-neutral-900">Messages</h2>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 shadow-sm">
+              <MessageSquare className="h-4 w-4 text-white" />
+            </div>
+          </div>
           <SearchBar placeholder="Search conversations..." value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
-        <div className="flex-1 overflow-y-auto">
+
+        {/* Conversation List */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-2">
           {filteredConversations.length === 0 ? (
-            <EmptyState
-              icon={MessageSquare}
-              title="No conversations"
-              description="Start a conversation with a match to see it here."
-            />
+            <div className="p-6">
+              <EmptyState
+                icon={MessageSquare}
+                title="No conversations"
+                description="Start a conversation with a match to see it here."
+              />
+            </div>
           ) : (
-            filteredConversations.map((conv) => (
-              <button
-                key={conv.id}
-                onClick={() => setSelectedConversation(conv.id)}
-                className={`flex w-full items-center gap-3 p-4 text-left transition-colors hover:bg-neutral-50 ${
-                  selectedConversation === conv.id ? 'bg-primary-50/50' : ''
-                }`}
-              >
-                <div className="relative">
-                  <Avatar initials={conv.avatar} />
-                  {conv.online && (
-                    <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" />
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-neutral-900">{conv.name}</p>
-                    <span className="text-xs text-neutral-400">{conv.time}</span>
+            <>
+              {filteredConversations.map((conv) => (
+                <button
+                  key={conv.id}
+                  onClick={() => setSelectedConversation(conv.id)}
+                  className={`flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all ${
+                    selectedConversation === conv.id
+                      ? 'bg-gradient-to-r from-indigo-50 to-transparent border-l-2 border-l-indigo-500'
+                      : 'hover:bg-neutral-50'
+                  }`}
+                >
+                  {/* Avatar with Online Status */}
+                  <div className="relative shrink-0">
+                    <Avatar initials={conv.avatar} size="md" />
+                    {conv.online && (
+                      <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 shadow-sm" />
+                    )}
                   </div>
-                  <p className="text-xs text-neutral-500 truncate mt-0.5">{conv.lastMessage}</p>
-                </div>
-                {conv.unread > 0 && (
-                  <Badge color="primary" variant="solid">{conv.unread}</Badge>
-                )}
-              </button>
-            ))
+
+                  {/* Conversation Info */}
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-1 flex items-center justify-between gap-2">
+                      <p
+                        className={`truncate text-sm font-bold ${
+                          conv.unread > 0 ? 'text-neutral-900' : 'text-neutral-700'
+                        }`}
+                      >
+                        {conv.name}
+                      </p>
+                      <span
+                        className={`shrink-0 text-xs ${
+                          conv.unread > 0 ? 'font-semibold text-indigo-600' : 'text-neutral-400'
+                        }`}
+                      >
+                        {conv.time}
+                      </span>
+                    </div>
+                    <p
+                      className={`truncate text-xs ${
+                        conv.unread > 0 ? 'font-medium text-neutral-700' : 'text-neutral-500'
+                      }`}
+                    >
+                      {conv.lastMessage}
+                    </p>
+                  </div>
+
+                  {/* Unread Badge */}
+                  {conv.unread > 0 && (
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-xs font-bold text-white shadow-sm shadow-indigo-500/40">
+                      {conv.unread}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </>
           )}
         </div>
       </div>
 
-      <div className={`flex-1 flex flex-col bg-white ${
-        !selectedConversation ? 'hidden sm:flex' : 'flex'
-      }`}>
+      {/* ── Chat Area ────────────────────────────────────────────────────────── */}
+      <div
+        className={`flex flex-1 flex-col bg-neutral-50/50 ${
+          !selectedConversation ? 'hidden sm:flex' : 'flex'
+        }`}
+      >
         {activeConversation ? (
           <>
-            <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
-              <div className="flex items-center gap-3">
+            {/* Chat Header */}
+            <div className="flex items-center justify-between border-b border-neutral-100 bg-white px-6 py-4 shadow-sm">
+              <div className="flex items-center gap-4">
                 <button
                   onClick={() => setSelectedConversation(null)}
-                  className="sm:hidden rounded-lg p-1 text-neutral-500 hover:bg-neutral-100"
+                  className="rounded-xl p-2 text-neutral-500 transition-colors hover:bg-neutral-100 sm:hidden"
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
                 <div className="relative">
-                  <Avatar initials={activeConversation.avatar} />
+                  <Avatar initials={activeConversation.avatar} size="md" />
                   {activeConversation.online && (
-                    <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" />
+                    <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" />
                   )}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-neutral-900">{activeConversation.name}</p>
-                  <p className="text-xs text-neutral-500">{activeConversation.online ? 'Online' : 'Offline'}</p>
+                  <p className="text-base font-bold text-neutral-900">{activeConversation.name}</p>
+                  <div className="mt-0.5 flex items-center gap-1.5">
+                    <span
+                      className={`h-2 w-2 rounded-full ${
+                        activeConversation.online ? 'bg-emerald-500' : 'bg-neutral-300'
+                      }`}
+                    />
+                    <p className="text-xs font-medium text-neutral-500">
+                      {activeConversation.online ? 'Active now' : 'Offline'}
+                    </p>
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-1">
@@ -123,49 +180,80 @@ export default function Messages() {
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {sampleMessages.map((msg) => (
-                <div key={msg.id} className={`flex ${msg.isMe ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] sm:max-w-[70%] rounded-2xl px-4 py-2.5 ${
-                    msg.isMe
-                      ? 'bg-primary-600 text-white rounded-br-md'
-                      : 'bg-neutral-100 text-neutral-900 rounded-bl-md'
-                  }`}>
-                    <p className="text-sm leading-relaxed">{msg.text}</p>
-                    <p className={`text-xs mt-1 ${msg.isMe ? 'text-primary-200' : 'text-neutral-400'}`}>
-                      {msg.time}
-                    </p>
+            {/* Messages Area */}
+            <div className="flex-1 space-y-1 overflow-y-auto px-6 py-6">
+              <div className="flex flex-col gap-4">
+                {sampleMessages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex items-end gap-3 ${msg.isMe ? 'justify-end' : 'justify-start'}`}
+                  >
+                    {!msg.isMe && <Avatar initials={activeConversation.avatar} size="sm" className="mb-1 shrink-0" />}
+                    <div
+                      className={`flex max-w-[80%] flex-col gap-1 sm:max-w-[65%] ${
+                        msg.isMe ? 'items-end' : 'items-start'
+                      }`}
+                    >
+                      <div
+                        className={`rounded-2xl px-5 py-3.5 shadow-sm ${
+                          msg.isMe
+                            ? 'gradient-primary rounded-br-sm text-white'
+                            : 'rounded-bl-sm border border-neutral-100 bg-white text-neutral-900'
+                        }`}
+                      >
+                        <p className="text-sm leading-relaxed">{msg.text}</p>
+                      </div>
+                      <p className={`px-1 text-xs ${msg.isMe ? 'text-right text-neutral-400' : 'text-neutral-400'}`}>
+                        {msg.time}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Typing Indicator */}
+              <div className="flex items-center gap-3 pt-2">
+                <Avatar initials={activeConversation.avatar} size="sm" />
+                <div className="flex items-center gap-2 rounded-2xl border border-neutral-100 bg-white px-5 py-3.5 shadow-sm">
+                  <div className="flex gap-1.5">
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-neutral-400" style={{ animationDelay: '0ms' }} />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-neutral-400" style={{ animationDelay: '150ms' }} />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-neutral-400" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
-              ))}
-
-              <div className="flex items-center gap-2 justify-center">
-                <div className="flex gap-1">
-                  <span className="h-2 w-2 rounded-full bg-neutral-300 animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="h-2 w-2 rounded-full bg-neutral-300 animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="h-2 w-2 rounded-full bg-neutral-300 animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-                <span className="text-xs text-neutral-400">Emily is typing...</span>
+                <span className="text-xs font-medium text-neutral-400">Emily is typing...</span>
               </div>
             </div>
 
-            <div className="border-t border-neutral-100 p-4">
-              <div className="flex items-center gap-2">
-                <Button variant="ghost" size="icon" icon={Paperclip} aria-label="Attach file" />
+            {/* Message Input */}
+            <div className="border-t border-neutral-200 bg-white p-5">
+              <div className="flex items-center gap-3 rounded-2xl border-2 border-neutral-200 bg-neutral-50 px-4 py-2 shadow-sm transition-all duration-200 focus-within:border-indigo-400 focus-within:bg-white">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  icon={Paperclip}
+                  aria-label="Attach file"
+                  className="shrink-0 text-neutral-400"
+                />
                 <input
                   type="text"
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
                   placeholder="Type a message..."
-                  className="flex-1 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-50"
+                  className="flex-1 bg-transparent py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && messageText.trim()) {
                       setMessageText('');
                     }
                   }}
                 />
-                <Button variant="ghost" size="icon" icon={Smile} aria-label="Add emoji" />
-                <Button size="icon" icon={Send} aria-label="Send message" />
+                <Button variant="ghost" size="icon" icon={Smile} aria-label="Add emoji" className="shrink-0 text-neutral-400" />
+                <button
+                  aria-label="Send message"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl gradient-primary text-white shadow-md shadow-indigo-500/30 transition-all duration-150 hover:scale-105 hover:shadow-lg"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
               </div>
             </div>
           </>
@@ -175,9 +263,7 @@ export default function Messages() {
               icon={MessageSquare}
               title="Select a conversation"
               description="Choose a conversation from the list to start messaging."
-              action={
-                <Button icon={UserPlus}>Find a Match</Button>
-              }
+              action={<Button icon={UserPlus}>Find a Match</Button>}
             />
           </div>
         )}

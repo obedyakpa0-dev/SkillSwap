@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, ShieldCheck, Flag, Users, UserCheck, ArrowLeft } from 'lucide-react';
+import { LayoutDashboard, ShieldCheck, Flag, Users, ArrowLeft } from 'lucide-react';
 
 const adminLinks = [
   { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
@@ -11,27 +11,34 @@ const adminLinks = [
 export default function AdminLayout() {
   const location = useLocation();
 
+  const isActive = (path) => location.pathname === path;
+
   return (
     <div className="flex min-h-screen bg-neutral-50">
-      <aside className="flex w-64 flex-col border-r border-neutral-200/60 bg-white">
-        <div className="flex h-16 items-center gap-2 border-b border-neutral-100 px-6">
+      {/* Sidebar */}
+      <aside className="sticky top-0 flex h-screen w-64 flex-col border-r border-neutral-100 bg-white self-start">
+        {/* Header */}
+        <div className="flex h-16 items-center gap-2.5 border-b border-neutral-100 px-5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-sm font-bold text-white">
             A
           </div>
-          <span className="text-lg font-semibold tracking-tight text-neutral-900">Admin</span>
+          <span className="text-sm font-semibold text-neutral-900">Admin Panel</span>
         </div>
-        <nav className="flex-1 px-3 py-4 space-y-1">
+
+        {/* Nav links */}
+        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
           {adminLinks.map((link) => {
             const Icon = link.icon;
-            const isActive = location.pathname === link.path;
+            const active = isActive(link.path);
+
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'bg-neutral-100 text-neutral-900'
-                    : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
+                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+                  active
+                    ? 'bg-indigo-50 text-indigo-700'
+                    : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
                 }`}
               >
                 <Icon className="h-5 w-5" />
@@ -40,17 +47,21 @@ export default function AdminLayout() {
             );
           })}
         </nav>
+
+        {/* Back link */}
         <div className="border-t border-neutral-100 p-3">
           <Link
             to="/"
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-600"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-neutral-400 transition-colors hover:text-neutral-700"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to site
           </Link>
         </div>
       </aside>
-      <main className="flex-1 overflow-auto">
+
+      {/* Main content */}
+      <main className="flex min-w-0 flex-1 flex-col overflow-x-hidden">
         <Outlet />
       </main>
     </div>

@@ -1,14 +1,16 @@
-import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Handshake, MessageSquare, Bell,
-  BookOpen, Trophy, Users, User, Settings,
-  HelpCircle, MessageCircle, LogOut, Shield,
-  ChevronLeft, ChevronRight, X, Calendar, Clock,
+  BookOpen, Trophy, Users, User, Settings, HelpCircle,
+  MessageCircle, LogOut, Shield, ChevronLeft, ChevronRight,
+  Calendar, Clock,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
-import { DASHBOARD_NAV_GROUPS, DASHBOARD_BOTTOM_NAV, DASHBOARD_HIDDEN_NAV, APP_NAME } from '../../constants';
+import {
+  DASHBOARD_NAV_GROUPS, DASHBOARD_BOTTOM_NAV,
+  DASHBOARD_HIDDEN_NAV, APP_NAME,
+} from '../../constants';
 
 const iconMap = {
   Dashboard: LayoutDashboard,
@@ -27,183 +29,251 @@ const iconMap = {
   Administration: Shield,
 };
 
+/* ── Tooltip wrapper for collapsed state ── */
+function Tooltip({ label, children }) {
+  return (
+    <div className="group/tip relative">
+      {children}
+      <span className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-neutral-900 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover/tip:opacity-100">
+        {label}
+        <span className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900" />
+      </span>
+    </div>
+  );
+}
+
+/* ── NavItem ── */
 function NavItem({ item, collapsed, isActive }) {
   const Icon = iconMap[item.label] || LayoutDashboard;
 
   if (collapsed) {
     return (
-      <Link
-        to={item.path}
-        className="group relative flex items-center justify-center rounded-xl p-2.5 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-        aria-label={item.label}
-      >
-        <Icon className="h-5 w-5" />
-        <div className="absolute left-full ml-2 hidden rounded-lg bg-neutral-900 px-2.5 py-1.5 text-xs font-medium text-white shadow-md group-hover:block whitespace-nowrap">
-          {item.label}
-        </div>
-      </Link>
+      <Tooltip label={item.label}>
+        <Link
+          to={item.path}
+          className={`flex items-center justify-center rounded-xl p-2.5 transition-all duration-150 ${
+            isActive
+              ? 'bg-primary-600 text-white shadow-md shadow-primary-500/30'
+              : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800'
+          }`}
+          aria-current={isActive ? 'page' : undefined}
+        >
+          <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+        </Link>
+      </Tooltip>
     );
   }
 
   return (
     <Link
       to={item.path}
-      className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
+      className={`group relative flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm transition-all duration-150 ${
         isActive
-          ? 'bg-primary-50 text-primary-700'
-          : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
+          ? 'bg-primary-50 font-semibold text-primary-700'
+          : 'font-medium text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
       }`}
       aria-current={isActive ? 'page' : undefined}
     >
-      <Icon className="h-5 w-5 shrink-0" />
-      <span>{item.label}</span>
+      {/* Active left bar */}
+      {isActive && (
+        <motion.span
+          layoutId="sidebar-active-bar"
+          className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full bg-primary-600"
+          transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
+        />
+      )}
+      <Icon
+        className={`h-[17px] w-[17px] shrink-0 transition-colors duration-150 ${
+          isActive ? 'text-primary-600' : 'text-neutral-400 group-hover:text-neutral-600'
+        }`}
+        aria-hidden="true"
+      />
+      <span className="truncate">{item.label}</span>
     </Link>
   );
 }
 
-export default function Sidebar({ isMobileOpen, onMobileClose, isCollapsed, onToggleCollapse }) {
+/* ── Sidebar content ── */
+function SidebarContent({ isCollapsed, onToggleCollapse, logout }) {
   const location = useLocation();
-  const { logout } = useAuth();
-  const [hoveredCollapsed, setHoveredCollapsed] = useState(false);
 
-  const effectiveCollapsed = isCollapsed && !hoveredCollapsed;
+  const isActive = (path) =>
+    path === '/dashboard'
+      ? location.pathname === '/dashboard'
+      : location.pathname.startsWith(path);
 
-  const isActive = (path) => {
-    if (path === '/dashboard') return location.pathname === '/dashboard';
-    return location.pathname.startsWith(path);
-  };
-
-  const sidebarContent = (
-    <div className="flex h-full w-full flex-col">
-      <div className={`flex h-16 items-center border-b border-neutral-100 ${effectiveCollapsed ? 'justify-center px-0' : 'gap-2 px-6'}`}>
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-600 text-sm font-bold text-white">
-          S
-        </div>
-        {!effectiveCollapsed && (
-          <span className="text-lg font-semibold tracking-tight text-neutral-900">{APP_NAME}</span>
+  return (
+    <div className="flex h-full flex-col bg-white">
+      {/* Logo header */}
+      <div className={`flex h-[64px] shrink-0 items-center border-b border-neutral-100 ${isCollapsed ? 'justify-center px-3' : 'px-4'}`}>
+        {isCollapsed ? (
+          <div className="gradient-primary flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black text-white shadow-md shadow-indigo-500/20">
+            S
+          </div>
+        ) : (
+          <Link
+            to="/dashboard"
+            className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-xl"
+          >
+            <div className="gradient-primary flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black text-white shadow-md shadow-indigo-500/20 transition-transform duration-200 group-hover:scale-110">
+              S
+            </div>
+            <span className="font-bold text-neutral-900 text-[15px] tracking-tight">{APP_NAME}</span>
+          </Link>
         )}
       </div>
 
-      <nav className={`flex-1 overflow-y-auto py-4 ${effectiveCollapsed ? 'px-2 space-y-4' : 'px-3 space-y-6'}`} aria-label="Dashboard navigation">
-        {DASHBOARD_NAV_GROUPS.map((group) => (
-          <div key={group.label}>
-            {!effectiveCollapsed && (
-              <p className="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-neutral-400">
-                {group.label}
-              </p>
-            )}
-            <div className={`${effectiveCollapsed ? 'flex flex-col items-center gap-1' : 'space-y-0.5'}`}>
-              {group.items.map((item) => (
-                <NavItem
-                  key={item.path}
-                  item={item}
-                  collapsed={effectiveCollapsed}
-                  isActive={isActive(item.path)}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
-
-        {!effectiveCollapsed && (
-          <div>
-            <p className="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-neutral-300 opacity-50">
-              {DASHBOARD_HIDDEN_NAV[0].label}
-            </p>
-            <div className="space-y-0.5 opacity-30">
-              {DASHBOARD_HIDDEN_NAV.map((item) => {
-                const Icon = iconMap[item.label] || Shield;
-                return (
-                  <div
+      {/* Navigation */}
+      <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Sidebar navigation">
+        <div className="space-y-5">
+          {DASHBOARD_NAV_GROUPS.map((group) => (
+            <div key={group.label}>
+              {!isCollapsed && (
+                <p className="mb-1.5 px-3 text-[10px] font-bold uppercase tracking-[0.1em] text-neutral-400">
+                  {group.label}
+                </p>
+              )}
+              {isCollapsed && <div className="my-1.5 mx-2 h-px bg-neutral-100" />}
+              <div className="space-y-0.5">
+                {group.items.map((item) => (
+                  <NavItem
                     key={item.path}
-                    className="flex cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-neutral-400"
-                    aria-disabled="true"
-                  >
-                    <Icon className="h-5 w-5 shrink-0" />
-                    <span>{item.label}</span>
-                  </div>
-                );
-              })}
+                    item={item}
+                    collapsed={isCollapsed}
+                    isActive={isActive(item.path)}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          ))}
+
+          {/* Hidden nav — dimmed preview */}
+          {!isCollapsed && DASHBOARD_HIDDEN_NAV.length > 0 && (
+            <div className="opacity-35 pointer-events-none select-none">
+              <p className="mb-1.5 px-3 text-[10px] font-bold uppercase tracking-[0.1em] text-neutral-400">
+                Admin
+              </p>
+              <div className="space-y-0.5">
+                {DASHBOARD_HIDDEN_NAV.map((item) => {
+                  const Icon = iconMap[item.label] || Shield;
+                  return (
+                    <div
+                      key={item.path}
+                      className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-neutral-500"
+                    >
+                      <Icon className="h-[17px] w-[17px] shrink-0" aria-hidden="true" />
+                      <span>{item.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       </nav>
 
-      <div className={`border-t border-neutral-100 py-3 ${effectiveCollapsed ? 'px-2 space-y-1' : 'px-3 space-y-0.5'}`}>
+      {/* Footer nav */}
+      <div className="border-t border-neutral-100 p-3 space-y-0.5">
         {DASHBOARD_BOTTOM_NAV.map((item) => {
           const Icon = iconMap[item.label] || HelpCircle;
+          const active = location.pathname.startsWith(item.path);
+
+          if (isCollapsed) {
+            return (
+              <Tooltip key={item.path} label={item.label}>
+                <Link
+                  to={item.path}
+                  className={`flex items-center justify-center rounded-xl p-2.5 transition-all duration-150 ${
+                    active ? 'bg-primary-50 text-primary-700' : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800'
+                  }`}
+                >
+                  <Icon className="h-[17px] w-[17px]" aria-hidden="true" />
+                </Link>
+              </Tooltip>
+            );
+          }
+
           return (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center gap-3 rounded-xl text-sm font-medium text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
-                effectiveCollapsed ? 'justify-center p-2.5' : 'px-3 py-2.5'
+              className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+                active ? 'bg-primary-50 text-primary-700' : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
               }`}
-              aria-label={effectiveCollapsed ? item.label : undefined}
             >
-              <Icon className="h-5 w-5 shrink-0" />
-              {!effectiveCollapsed && <span>{item.label}</span>}
+              <Icon className="h-[17px] w-[17px] shrink-0" aria-hidden="true" />
+              <span>{item.label}</span>
             </Link>
           );
         })}
-        <button
-          onClick={logout}
-          className={`flex w-full items-center gap-3 rounded-xl text-sm font-medium text-neutral-500 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
-            effectiveCollapsed ? 'justify-center p-2.5' : 'px-3 py-2.5'
-          }`}
-          aria-label={effectiveCollapsed ? 'Sign Out' : undefined}
-        >
-          <LogOut className="h-5 w-5 shrink-0" />
-          {!effectiveCollapsed && <span>Sign Out</span>}
-        </button>
+
+        {/* Logout */}
+        {isCollapsed ? (
+          <Tooltip label="Sign Out">
+            <button
+              onClick={logout}
+              className="flex w-full items-center justify-center rounded-xl p-2.5 text-neutral-500 transition-colors duration-150 hover:bg-rose-50 hover:text-rose-600"
+            >
+              <LogOut className="h-[17px] w-[17px]" aria-hidden="true" />
+            </button>
+          </Tooltip>
+        ) : (
+          <button
+            onClick={logout}
+            className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:bg-rose-50 hover:text-rose-600"
+          >
+            <LogOut className="h-[17px] w-[17px] shrink-0" aria-hidden="true" />
+            <span>Sign Out</span>
+          </button>
+        )}
       </div>
 
-      {!effectiveCollapsed && (
+      {/* Collapse toggle */}
+      <div className="border-t border-neutral-100 p-3 flex justify-center">
         <button
           onClick={onToggleCollapse}
-          className="hidden border-t border-neutral-100 p-3 text-neutral-400 transition-colors hover:text-neutral-600 lg:flex items-center justify-center"
-          aria-label="Collapse sidebar"
+          className="flex h-8 w-8 items-center justify-center rounded-xl text-neutral-400 transition-all duration-150 hover:bg-neutral-100 hover:text-neutral-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
-          <ChevronLeft className="h-4 w-4" />
+          {isCollapsed
+            ? <ChevronRight className="h-4 w-4" aria-hidden="true" />
+            : <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+          }
         </button>
-      )}
-      {effectiveCollapsed && (
-        <button
-          onClick={onToggleCollapse}
-          className="hidden border-t border-neutral-100 p-3 text-neutral-400 transition-colors hover:text-neutral-600 lg:flex items-center justify-center"
-          aria-label="Expand sidebar"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </button>
-      )}
+      </div>
     </div>
   );
+}
+
+/* ── Sidebar export ── */
+export default function Sidebar({ isMobileOpen, onMobileClose, isCollapsed, onToggleCollapse }) {
+  const { logout } = useAuth();
 
   return (
     <>
       {/* Desktop sidebar */}
-      <aside
-        className={`hidden lg:flex lg:flex-col sticky top-0 h-screen shrink-0 bg-white border-r border-neutral-200/60 overflow-hidden transition-all duration-200 ease-in-out ${effectiveCollapsed ? 'w-16' : 'w-64'}`}
-        onMouseEnter={() => {
-          if (isCollapsed) setHoveredCollapsed(true);
-        }}
-        onMouseLeave={() => {
-          setHoveredCollapsed(false);
-        }}
+      <motion.aside
+        className="hidden lg:flex lg:flex-col sticky top-0 h-screen border-r border-neutral-100 overflow-hidden self-start"
+        animate={{ width: isCollapsed ? 72 : 240 }}
+        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
       >
-        {sidebarContent}
-      </aside>
+        <SidebarContent
+          isCollapsed={isCollapsed}
+          onToggleCollapse={onToggleCollapse}
+          logout={logout}
+        />
+      </motion.aside>
 
-      {/* Mobile drawer overlay */}
+      {/* Mobile overlay */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
+            className="fixed inset-0 z-40 bg-neutral-950/40 backdrop-blur-sm lg:hidden"
+            onClick={onMobileClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-neutral-900/50 lg:hidden"
-            onClick={onMobileClose}
             aria-hidden="true"
           />
         )}
@@ -213,86 +283,18 @@ export default function Sidebar({ isMobileOpen, onMobileClose, isCollapsed, onTo
       <AnimatePresence>
         {isMobileOpen && (
           <motion.aside
-            initial={{ x: -288 }}
+            className="fixed inset-y-0 left-0 z-50 w-64 border-r border-neutral-100 bg-white shadow-2xl lg:hidden"
+            initial={{ x: -256 }}
             animate={{ x: 0 }}
-            exit={{ x: -288 }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-soft-xl lg:hidden"
+            exit={{ x: -256 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+            aria-label="Mobile navigation"
           >
-            <div className="flex h-full flex-col">
-              <div className="flex h-16 items-center justify-between border-b border-neutral-100 px-4">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-sm font-bold text-white">
-                    S
-                  </div>
-                  <span className="text-lg font-semibold tracking-tight text-neutral-900">{APP_NAME}</span>
-                </div>
-                <button
-                  onClick={onMobileClose}
-                  className="rounded-lg p-1.5 text-neutral-500 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-                  aria-label="Close navigation menu"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-
-              <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-6" aria-label="Mobile navigation">
-                {DASHBOARD_NAV_GROUPS.map((group) => (
-                  <div key={group.label}>
-                    <p className="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-neutral-400">
-                      {group.label}
-                    </p>
-                    <div className="space-y-0.5">
-                      {group.items.map((item) => {
-                        const Icon = iconMap[item.label] || LayoutDashboard;
-                        const active = isActive(item.path);
-                        return (
-                          <Link
-                            key={item.path}
-                            to={item.path}
-                            onClick={onMobileClose}
-                            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
-                              active
-                                ? 'bg-primary-50 text-primary-700'
-                                : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
-                            }`}
-                            aria-current={active ? 'page' : undefined}
-                          >
-                            <Icon className="h-5 w-5 shrink-0" />
-                            <span>{item.label}</span>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </nav>
-
-              <div className="border-t border-neutral-100 px-3 py-3 space-y-0.5">
-                {DASHBOARD_BOTTOM_NAV.map((item) => {
-                  const Icon = iconMap[item.label] || HelpCircle;
-                  return (
-                    <Link
-                      key={item.path}
-                      to={item.path}
-                      onClick={onMobileClose}
-                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-                    >
-                      <Icon className="h-5 w-5 shrink-0" />
-                      <span>{item.label}</span>
-                    </Link>
-                  );
-                })}
-                <button
-                  onClick={() => { logout(); onMobileClose(); }}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-neutral-500 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-                  aria-label="Sign Out"
-                >
-                  <LogOut className="h-5 w-5 shrink-0" />
-                  <span>Sign Out</span>
-                </button>
-              </div>
-            </div>
+            <SidebarContent
+              isCollapsed={false}
+              onToggleCollapse={onMobileClose}
+              logout={logout}
+            />
           </motion.aside>
         )}
       </AnimatePresence>

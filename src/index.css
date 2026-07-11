@@ -1,330 +1,250 @@
-@import 'tailwindcss';
-
-/* ==========================================
-   SkillSwap Design System
-   ========================================== */
+@import "tailwindcss";
 
 @theme {
-  /* --- Primary: Blue 600 --- */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
-  --color-primary-950: #172554;
+  /* Designer Primary Palette - Refined Sapphire Blue (High-end UI feel) */
+  --color-primary-50: hsl(214, 100%, 97%);
+  --color-primary-100: hsl(214, 94%, 93%);
+  --color-primary-200: hsl(213, 96%, 86%);
+  --color-primary-300: hsl(212, 96%, 72%);
+  --color-primary-400: hsl(211, 94%, 58%);
+  --color-primary-500: hsl(215, 91%, 46%); /* Premium Designer Blue */
+  --color-primary-600: hsl(217, 92%, 39%);
+  --color-primary-700: hsl(219, 85%, 31%);
+  --color-primary-800: hsl(221, 79%, 23%);
+  --color-primary-900: hsl(222, 67%, 13%);
+  --color-primary-950: hsl(222, 60%, 8%);
 
-  /* --- Secondary: Slate --- */
-  --color-secondary-50: #f8fafc;
-  --color-secondary-100: #f1f5f9;
-  --color-secondary-200: #e2e8f0;
-  --color-secondary-300: #cbd5e1;
-  --color-secondary-400: #94a3b8;
-  --color-secondary-500: #64748b;
-  --color-secondary-600: #475569;
-  --color-secondary-700: #334155;
-  --color-secondary-800: #1e293b;
-  --color-secondary-900: #0f172a;
-  --color-secondary-950: #020617;
+  /* Mapping indigo variables to primary blues to style hardcoded component selectors */
+  --color-indigo-50: hsl(214, 100%, 97%);
+  --color-indigo-100: hsl(214, 94%, 93%);
+  --color-indigo-200: hsl(213, 96%, 86%);
+  --color-indigo-300: hsl(212, 96%, 72%);
+  --color-indigo-400: hsl(211, 94%, 58%);
+  --color-indigo-500: hsl(215, 91%, 46%);
+  --color-indigo-600: hsl(217, 92%, 39%);
+  --color-indigo-700: hsl(219, 85%, 31%);
+  --color-indigo-800: hsl(221, 79%, 23%);
+  --color-indigo-900: hsl(222, 67%, 13%);
+  --color-indigo-950: hsl(222, 60%, 8%);
 
-  /* --- Success: Green --- */
-  --color-success-50: #f0fdf4;
-  --color-success-100: #dcfce7;
-  --color-success-200: #bbf7d0;
-  --color-success-300: #86efac;
-  --color-success-400: #4ade80;
-  --color-success-500: #22c55e;
-  --color-success-600: #16a34a;
-  --color-success-700: #15803d;
-  --color-success-800: #166534;
-  --color-success-900: #14532d;
+  /* Designer Accent Palette - Elegant Amethyst Violet (Low-noise, premium style) */
+  --color-accent-50: hsl(258, 100%, 98%);
+  --color-accent-100: hsl(257, 94%, 94%);
+  --color-accent-200: hsl(256, 96%, 88%);
+  --color-accent-300: hsl(255, 96%, 76%);
+  --color-accent-400: hsl(254, 94%, 62%);
+  --color-accent-500: hsl(253, 91%, 50%);
+  --color-accent-600: hsl(255, 92%, 43%);
+  --color-accent-700: hsl(257, 85%, 34%);
+  --color-accent-800: hsl(259, 79%, 25%);
+  --color-accent-900: hsl(261, 67%, 14%);
+  --color-accent-950: hsl(262, 60%, 9%);
 
-  /* --- Warning: Amber --- */
-  --color-warning-50: #fffbeb;
-  --color-warning-100: #fef3c7;
-  --color-warning-200: #fde68a;
-  --color-warning-300: #fcd34d;
-  --color-warning-400: #fbbf24;
-  --color-warning-500: #f59e0b;
-  --color-warning-600: #d97706;
-  --color-warning-700: #b45309;
-  --color-warning-800: #92400e;
-  --color-warning-900: #78350f;
+  /* Neutrals: Cool, elegant gray slate scales */
+  --color-neutral-50: hsl(210, 40%, 98%);
+  --color-neutral-100: hsl(210, 30%, 96%);
+  --color-neutral-200: hsl(210, 20%, 90%);
+  --color-neutral-300: hsl(210, 14%, 80%);
+  --color-neutral-400: hsl(210, 10%, 62%);
+  --color-neutral-500: hsl(210, 8%, 46%);
+  --color-neutral-600: hsl(210, 10%, 36%);
+  --color-neutral-700: hsl(210, 11%, 27%);
+  --color-neutral-800: hsl(210, 13%, 18%);
+  --color-neutral-900: hsl(210, 15%, 12%);
+  --color-neutral-950: hsl(210, 20%, 6%);
 
-  /* --- Danger: Red --- */
-  --color-danger-50: #fef2f2;
-  --color-danger-100: #fee2e2;
-  --color-danger-200: #fecaca;
-  --color-danger-300: #fca5a5;
-  --color-danger-400: #f87171;
-  --color-danger-500: #ef4444;
-  --color-danger-600: #dc2626;
-  --color-danger-700: #b91c1c;
-  --color-danger-800: #991b1b;
-  --color-danger-900: #7f1d1d;
+  /* Refined Alert Tones */
+  --color-success-50: hsl(150, 75%, 98%);
+  --color-success-100: hsl(150, 70%, 94%);
+  --color-success-500: hsl(150, 80%, 38%);
+  --color-success-700: hsl(150, 85%, 26%);
 
-  /* --- Typography --- */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --color-danger-50: hsl(355, 85%, 98%);
+  --color-danger-100: hsl(355, 80%, 94%);
+  --color-danger-500: hsl(355, 88%, 52%);
+  --color-danger-700: hsl(355, 85%, 34%);
 
-  /* Type scale */
-  --text-xs: 0.75rem;
-  --text-xs--line-height: 1rem;
-  --text-sm: 0.875rem;
-  --text-sm--line-height: 1.25rem;
-  --text-base: 1rem;
-  --text-base--line-height: 1.5rem;
-  --text-lg: 1.125rem;
-  --text-lg--line-height: 1.75rem;
-  --text-xl: 1.25rem;
-  --text-xl--line-height: 1.75rem;
-  --text-2xl: 1.5rem;
-  --text-2xl--line-height: 2rem;
-  --text-3xl: 1.875rem;
-  --text-3xl--line-height: 2.25rem;
-  --text-4xl: 2.25rem;
-  --text-4xl--line-height: 2.5rem;
-  --text-5xl: 3rem;
-  --text-5xl--line-height: 1.1;
+  --color-warning-50: hsl(38, 90%, 97%);
+  --color-warning-100: hsl(38, 85%, 93%);
+  --color-warning-500: hsl(38, 90%, 46%);
+  --color-warning-700: hsl(38, 92%, 32%);
 
-  /* Font weights */
-  --font-weight-light: 300;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
+  /* Font scales */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* Letter spacing */
-  --tracking-tight: -0.025em;
-  --tracking-normal: 0;
-  --tracking-wide: 0.025em;
+  /* Designer Soft Shadows (Almost invisible, extremely elegant) */
+  --shadow-card: 0 1px 2px 0 rgba(0, 0, 0, 0.01), 0 8px 24px -4px rgba(9, 30, 66, 0.04);
+  --shadow-card-hover: 0 20px 48px -10px rgba(9, 30, 66, 0.09), 0 2px 8px 0 rgba(9, 30, 66, 0.02);
 
-  /* --- Border Radius --- */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 0.875rem;
-  --radius-2xl: 1rem;
-  --radius-3xl: 1.25rem;
-
-  /* --- Shadows --- */
-  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-  --shadow-soft: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
-  --shadow-soft-lg: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
-  --shadow-soft-xl: 0 20px 60px -15px rgba(0, 0, 0, 0.12);
-
-  /* --- Transitions --- */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* --- Spacing --- */
-  --container-xs: 20rem;
-  --container-sm: 24rem;
-  --container-md: 28rem;
-  --container-lg: 32rem;
-  --container-xl: 36rem;
-  --container-2xl: 42rem;
-  --container-3xl: 48rem;
-  --container-4xl: 56rem;
-  --container-5xl: 64rem;
-  --container-6xl: 72rem;
-
-  /* --- Z-Index --- */
-  --z-dropdown: 50;
-  --z-sticky: 100;
-  --z-modal: 200;
-  --z-toast: 300;
+  /* Subtle Custom Animations */
+  --animate-float: float 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  --animate-pulse-slow: pulse-slow 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  --animate-fade-in-up: fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-scale-in: scale-in 0.3s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
 }
 
-/* ==========================================
-   Base Styles
-   ========================================== */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Custom Keyframes */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.93; }
 }
 
-body {
-  font-family: var(--font-sans);
-  color: var(--color-secondary-900);
-  background-color: var(--color-secondary-50);
-  line-height: 1.6;
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ==========================================
-   Typography Utility Classes
-   ========================================== */
-
-.text-display {
-  font-size: var(--text-5xl);
-  line-height: var(--text-5xl--line-height);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--tracking-tight);
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-.text-heading {
-  font-size: var(--text-3xl);
-  line-height: var(--text-3xl--line-height);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--tracking-tight);
+/* Global Selection Styling */
+::selection {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-900);
 }
 
-.text-title {
-  font-size: var(--text-xl);
-  line-height: var(--text-xl--line-height);
-  font-weight: var(--font-weight-semibold);
-}
-
-.text-subtitle {
-  font-size: var(--text-lg);
-  line-height: var(--text-lg--line-height);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-secondary-500);
-}
-
-.text-body {
-  font-size: var(--text-base);
-  line-height: var(--text-base--line-height);
-}
-
-.text-small {
-  font-size: var(--text-sm);
-  line-height: var(--text-sm--line-height);
-}
-
-.text-caption {
-  font-size: var(--text-xs);
-  line-height: var(--text-xs--line-height);
-}
-
-.text-button {
-  font-size: var(--text-sm);
-  line-height: 1;
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-normal);
-}
-
-/* ==========================================
-   Form Utility Classes
-   ========================================== */
-
-.form-input-base {
-  width: 100%;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--color-secondary-200);
-  background-color: white;
-  padding: 0.625rem 0.875rem;
-  font-size: var(--text-sm);
-  color: var(--color-secondary-900);
-  transition:
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast);
-}
-
-.form-input-base::placeholder {
-  color: var(--color-secondary-400);
-}
-
-.form-input-base:focus {
-  border-color: var(--color-primary-300);
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
-}
-
-.form-input-error {
-  border-color: var(--color-danger-300);
-}
-
-.form-input-error:focus {
-  border-color: var(--color-danger-400);
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
-}
-
-.form-input-disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-  background-color: var(--color-secondary-50);
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 0.375rem;
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-secondary-700);
-}
-
-.form-error {
-  margin-top: 0.25rem;
-  font-size: var(--text-xs);
-  color: var(--color-danger-600);
-}
-
-.form-helper {
-  margin-top: 0.25rem;
-  font-size: var(--text-xs);
-  color: var(--color-secondary-400);
-}
-
-/* ==========================================
-   Focus Ring Utility
-   ========================================== */
-
-.focus-ring:focus-visible {
-  outline: 2px solid var(--color-primary-600);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-.focus-ring-inset:focus-visible {
-  outline: 2px solid var(--color-primary-600);
-  outline-offset: -2px;
-  border-radius: var(--radius-sm);
-}
-
-/* ==========================================
-   Scrollbar
-   ========================================== */
-
+/* Clean Professional Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d4;
-  border-radius: 3px;
+  background: var(--color-neutral-200, #e2e8f0);
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #a3a3a3;
+  background: var(--color-neutral-300, #cbd5e1);
 }
 
-/* ==========================================
-   Selection
-   ========================================== */
+/* Typography and Layout baseline */
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-neutral-800);
+  background-color: #ffffff;
+  overflow-x: hidden;
+}
 
-::selection {
-  background-color: rgba(37, 99, 235, 0.15);
-  color: var(--color-secondary-900);
+/* Designer Form Styling Override (Extremely Clean) */
+input, textarea, select {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-primary-400) !important;
+  box-shadow: 0 0 0 3px hsla(215, 91%, 46%, 0.08) !important;
+  outline: none !important;
+}
+
+/* Custom Interactive Utilities */
+
+/* 1. Header/Toolbar Accent Indicator - Elegant and Static gradient */
+.accent-line {
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--color-primary-500) 0%, var(--color-accent-400) 50%, var(--color-primary-500) 100%);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.02);
+}
+
+/* 2. Premium Low-Noise Text Gradient */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-accent-500) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 3. Deep Navy-to-Sapphire Primary Component Gradient */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-primary-700) 50%, var(--color-primary-800) 100%);
+}
+
+/* 4. Soft Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 5. Ambient Designer Radial Mesh (Subtle highlights, Apple style) */
+.gradient-mesh {
+  background-color: hsl(210, 40%, 98%);
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(215, 91%, 46%, 0.02) 0px, transparent 65%),
+    radial-gradient(at 100% 0%, hsla(253, 91%, 50%, 0.025) 0px, transparent 65%),
+    radial-gradient(at 50% 100%, hsla(215, 91%, 46%, 0.015) 0px, transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Professional Focus Ring Utility */
+.focus-ring {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--color-primary-500);
+}
+
+/* Premium Dark Theme Implementation */
+.dark {
+  color-scheme: dark;
+  background-color: hsl(210, 20%, 6%);
+  
+  --color-neutral-50: hsl(210, 15%, 12%);
+  --color-neutral-100: hsl(210, 13%, 16%);
+  --color-neutral-200: hsl(210, 11%, 24%);
+  --color-neutral-300: hsl(210, 9%, 36%);
+  --color-neutral-400: hsl(210, 8%, 52%);
+  --color-neutral-500: hsl(210, 9%, 65%);
+  --color-neutral-600: hsl(210, 12%, 78%);
+  --color-neutral-700: hsl(210, 15%, 88%);
+  --color-neutral-800: hsl(210, 18%, 94%);
+  --color-neutral-900: hsl(210, 20%, 98%);
+  
+  body {
+    background-color: hsl(210, 20%, 6%);
+    color: hsl(210, 18%, 94%);
+  }
+  
+  .gradient-mesh {
+    background-color: hsl(210, 20%, 6%);
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(215, 91%, 46%, 0.08) 0px, transparent 65%),
+      radial-gradient(at 100% 0%, hsla(253, 91%, 50%, 0.09) 0px, transparent 65%),
+      radial-gradient(at 50% 100%, hsla(215, 91%, 46%, 0.06) 0px, transparent 60%);
+  }
+  
+  .glass {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-neutral-200);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-neutral-300);
+  }
+
+  input, textarea, select {
+    border-color: var(--color-neutral-200) !important;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--color-primary-400) !important;
+    box-shadow: 0 0 0 3px hsla(215, 91%, 46%, 0.15) !important;
+  }
 }

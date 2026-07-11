@@ -10,6 +10,7 @@ import Avatar from '../components/ui/Avatar';
 import Button from '../components/ui/Button';
 import EmptyState from '../components/ui/EmptyState';
 
+// ─── Data ─────────────────────────────────────────────────────────────────────
 const tabs = [
   { key: 'pending', label: 'Pending', icon: Clock },
   { key: 'accepted', label: 'Accepted', icon: CheckCircle2 },
@@ -35,82 +36,132 @@ const matches = {
   completed: [
     { id: 8, name: 'Tom Baker', skill: 'Git & Version Control', offeredSkill: 'React', avatar: 'TB', completedAt: '1 week ago', rating: 5, matchScore: 90 },
     { id: 9, name: 'Lisa Zhang', skill: 'CSS Grid & Flexbox', offeredSkill: 'JavaScript', avatar: 'LZ', completedAt: '2 weeks ago', rating: 4, matchScore: 87 },
-    { id: 10, name: 'Ryan O\'Brien', skill: 'React Hooks', offeredSkill: 'TypeScript', avatar: 'RO', completedAt: '3 weeks ago', rating: 5, matchScore: 93 },
+    { id: 10, name: "Ryan O'Brien", skill: 'React Hooks', offeredSkill: 'TypeScript', avatar: 'RO', completedAt: '3 weeks ago', rating: 5, matchScore: 93 },
   ],
   cancelled: [
     { id: 11, name: 'Anna Schmidt', skill: 'Docker Basics', offeredSkill: 'Node.js', avatar: 'AS', cancelledAt: '4 days ago', reason: 'Schedule conflict' },
   ],
 };
 
+// ─── MatchCard component ──────────────────────────────────────────────────────
 function MatchCard({ match, tab }) {
   return (
-    <Card hover className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex items-center gap-4">
-        <Avatar initials={match.avatar} size="lg" />
-        <div>
-          <h3 className="text-sm font-semibold text-neutral-900">{match.name}</h3>
-          <div className="flex items-center gap-2 mt-1">
-            <Badge color="primary" variant="outline">{match.skill}</Badge>
-            <Badge color="secondary" variant="outline">{match.offeredSkill}</Badge>
+    <motion.div
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.2 }}
+      className="group rounded-2xl border border-neutral-100 bg-white p-6 shadow-card transition-all hover:shadow-card-hover"
+    >
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+        {/* Left: Avatar + info */}
+        <div className="flex items-start gap-5">
+          <Avatar initials={match.avatar} size="lg" className="shrink-0 ring-2 ring-primary-100 ring-offset-2" />
+          <div>
+            <h3 className="text-base font-bold text-neutral-900">{match.name}</h3>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
+                Learning: {match.skill}
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-700">
+                Teaching: {match.offeredSkill}
+              </span>
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              {tab === 'pending' && (
+                <span className="flex items-center gap-1.5 text-sm text-neutral-500">
+                  <Clock className="h-4 w-4 text-neutral-400" />
+                  Requested {match.requestedAt}
+                </span>
+              )}
+              {tab === 'accepted' && (
+                <span className="flex items-center gap-1.5 text-sm text-neutral-500">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                  Accepted {match.acceptedAt}
+                </span>
+              )}
+              {tab === 'active' && (
+                <div className="flex flex-wrap items-center gap-3 text-sm">
+                  <span className="flex items-center gap-1.5 font-medium text-emerald-600">
+                    <Play className="h-4 w-4" />
+                    {match.sessionsCompleted} sessions completed
+                  </span>
+                  <span className="flex items-center gap-1.5 text-neutral-500">
+                    <Calendar className="h-4 w-4" />
+                    Next: {match.nextSession}
+                  </span>
+                </div>
+              )}
+              {tab === 'completed' && (
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`h-4 w-4 ${
+                          i < match.rating ? 'fill-amber-400 text-amber-400' : 'fill-neutral-100 text-neutral-200'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-sm text-neutral-500">{match.completedAt}</span>
+                </div>
+              )}
+              {tab === 'cancelled' && (
+                <span className="text-sm text-neutral-500">
+                  {match.reason} · {match.cancelledAt}
+                </span>
+              )}
+            </div>
           </div>
-          <div className="flex items-center gap-3 mt-2">
+        </div>
+
+        {/* Right: match score + actions */}
+        <div className="flex shrink-0 flex-col items-start gap-3 sm:items-end">
+          {match.matchScore && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 px-3 py-1 text-xs font-bold text-white shadow-sm">
+              {match.matchScore}% Match
+            </span>
+          )}
+          <div className="flex flex-wrap gap-2">
             {tab === 'pending' && (
-              <span className="text-xs text-neutral-500">Requested {match.requestedAt}</span>
+              <>
+                <Button size="sm" variant="outline" icon={XCircle}>
+                  Decline
+                </Button>
+                <Button size="sm" icon={CheckCircle2}>
+                  Accept
+                </Button>
+              </>
             )}
             {tab === 'accepted' && (
-              <span className="text-xs text-neutral-500">Accepted {match.acceptedAt}</span>
+              <Button size="sm" icon={MessageSquare}>
+                Message
+              </Button>
             )}
             {tab === 'active' && (
-              <div className="flex items-center gap-2 text-xs">
-                <span className="text-emerald-600">{match.sessionsCompleted} sessions</span>
-                <span className="text-neutral-300">|</span>
-                <span className="text-neutral-500">{match.nextSession}</span>
-              </div>
+              <>
+                <Button size="sm" variant="outline" icon={MessageSquare}>
+                  Chat
+                </Button>
+                <Button size="sm" icon={Calendar}>
+                  Schedule
+                </Button>
+              </>
             )}
             {tab === 'completed' && (
-              <div className="flex items-center gap-1">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className={`h-3 w-3 ${i < match.rating ? 'fill-amber-400 text-amber-400' : 'text-neutral-200'}`} />
-                ))}
-                <span className="ml-1 text-xs text-neutral-400">{match.completedAt}</span>
-              </div>
-            )}
-            {tab === 'cancelled' && (
-              <span className="text-xs text-neutral-500">{match.reason} &middot; {match.cancelledAt}</span>
+              <Button size="sm" variant="outline" icon={ChevronRight}>
+                View Details
+              </Button>
             )}
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-2 sm:flex-col sm:items-end">
-        <Badge color="success" variant="solid">{match.matchScore}% Match</Badge>
-        <div className="flex gap-1.5">
-          {tab === 'pending' && (
-            <>
-              <Button size="sm" variant="outline" icon={XCircle}>Decline</Button>
-              <Button size="sm" icon={CheckCircle2}>Accept</Button>
-            </>
-          )}
-          {tab === 'accepted' && (
-            <Button size="sm" icon={MessageSquare}>Message</Button>
-          )}
-          {tab === 'active' && (
-            <>
-              <Button size="sm" variant="outline" icon={MessageSquare}>Chat</Button>
-              <Button size="sm" icon={Calendar}>Schedule</Button>
-            </>
-          )}
-          {tab === 'completed' && (
-            <Button size="sm" variant="outline" icon={ChevronRight}>View Details</Button>
-          )}
-        </div>
-      </div>
-    </Card>
+    </motion.div>
   );
 }
 
+// ─── Component ────────────────────────────────────────────────────────────────
 export default function Matches() {
   const [activeTab, setActiveTab] = useState('pending');
-
   const currentMatches = matches[activeTab] || [];
 
   return (
@@ -118,9 +169,18 @@ export default function Matches() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto"
+      className="mx-auto max-w-6xl px-6 py-8"
     >
-      <div className="flex flex-wrap gap-2 mb-6 overflow-x-auto pb-1">
+      {/* ── Page Header ─────────────────────────────────────────────────────── */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold tracking-tight text-neutral-900">My Matches</h1>
+        <p className="mt-2 text-sm text-neutral-600">
+          Manage your skill exchange connections — pending, active, and completed.
+        </p>
+      </div>
+
+      {/* ── Tab bar ──────────────────────────────────────────────────────────── */}
+      <div className="mb-8 flex flex-wrap gap-2 overflow-x-auto pb-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const count = matches[tab.key].length;
@@ -128,18 +188,20 @@ export default function Matches() {
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
+              className={`flex items-center gap-2 whitespace-nowrap rounded-full border px-5 py-2.5 text-sm font-semibold transition-all ${
                 activeTab === tab.key
-                  ? 'bg-primary-600 text-white shadow-sm'
-                  : 'bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-50'
+                  ? 'gradient-primary border-transparent text-white shadow-lg shadow-indigo-500/30'
+                  : 'border-neutral-200 bg-white text-neutral-600 hover:border-indigo-200 hover:bg-indigo-50'
               }`}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-4 w-4 shrink-0" />
               {tab.label}
               {count > 0 && (
-                <span className={`inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-xs font-semibold ${
-                  activeTab === tab.key ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-600'
-                }`}>
+                <span
+                  className={`inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-xs font-bold ${
+                    activeTab === tab.key ? 'bg-white/20 text-white' : 'bg-indigo-100 text-indigo-700'
+                  }`}
+                >
                   {count}
                 </span>
               )}
@@ -148,14 +210,17 @@ export default function Matches() {
         })}
       </div>
 
+      {/* ── Match Cards ──────────────────────────────────────────────────────── */}
       {currentMatches.length === 0 ? (
-        <EmptyState
-          icon={Users}
-          title={`No ${activeTab} matches`}
-          description={`Your ${activeTab} matches will appear here.`}
-        />
+        <div className="rounded-2xl border border-neutral-100 bg-white p-16 text-center shadow-card">
+          <EmptyState
+            icon={Users}
+            title={`No ${activeTab} matches`}
+            description={`Your ${activeTab} matches will appear here.`}
+          />
+        </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {currentMatches.map((match) => (
             <MatchCard key={match.id} match={match} tab={activeTab} />
           ))}
